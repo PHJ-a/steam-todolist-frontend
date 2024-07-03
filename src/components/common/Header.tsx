@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <HeaderContainer>
       <img src={logo} alt='logo' className='logo' />
-      <LoginButton>로그인</LoginButton>
+      <LoginButton>스팀 로그인</LoginButton>
     </HeaderContainer>
   );
 };
