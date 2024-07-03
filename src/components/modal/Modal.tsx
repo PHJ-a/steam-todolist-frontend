@@ -65,14 +65,13 @@ const StyleModal = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: (0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 
   .modal {
-    flex: 1;
     display: flex;
     flex-direction: column;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
@@ -82,6 +81,7 @@ const StyleModal = styled.div`
     border: 1px solid black;
     border-radius: 6px;
     background-color: white;
+    position: absolute;
   }
 `;
 
@@ -90,7 +90,7 @@ const StyleModalHeader = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid #ccc;
-  padding-top: 10px 10px;
+  padding: 10px 10px;
 
   .title {
     flex-grow: 1;
