@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import useModal from '../hooks/useModal';
 import TodoModal from '../components/modal/TodoModal';
 import { ModalData, Todo } from '../models/type';
+import AchievementList from '../components/List';
 
 moment.locale('ko-KR');
 
@@ -108,6 +109,9 @@ const MyCalendar = () => {
           agenda: '일정',
         }}
       />
+      <AchievementListContainer>
+        <AchievementList todos={todos} />
+      </AchievementListContainer>
       <TodoModal open={open} close={handleClose} data={eventData} />
     </CalendarContainer>
   );
@@ -120,8 +124,13 @@ const CalendarContainer = styled.div`
   width: 100%;
 
   .my-calendar {
-    flex: 1;
+    flex: 3;
   }
+`;
+const AchievementListContainer = styled.div`
+  flex: 1;
+  height: 100vh;
+  padding: 20px;
 `;
 
 export default MyCalendar;
