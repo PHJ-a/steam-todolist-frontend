@@ -15,7 +15,13 @@ const AchievementList = ({ todos }: AchievementListProps) => {
 
       {todos.map((todo, index) => (
         <AchievementItem key={index}>
-          <GameName>{todo.gameName}</GameName>
+          <div className='header'>
+            <GameName>{todo.gameName}</GameName>
+            <div className='exit' onClick={() => alert('삭제합니다')}>
+              X
+            </div>
+          </div>
+
           <AchievementTitle>{todo.achievementTitle}</AchievementTitle>
           <TimeInfo>
             시작시간: {todo.startDate.toLocaleString()}
@@ -47,6 +53,17 @@ const ListContainer = styled.div`
     justify-content: space-between;
     align-items: center;
   }
+  .exit {
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-right: 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
 `;
 
 const AchievementItem = styled.div`
@@ -54,6 +71,11 @@ const AchievementItem = styled.div`
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #fff;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const GameName = styled.div`
