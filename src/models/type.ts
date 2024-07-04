@@ -15,7 +15,7 @@ export type ModalData = {
   achievementDesc: string;
   startDate: Date;
   endDate: Date | null;
-  isCompleted: boolean;
+  iscompleted: boolean;
   progress: number;
   icon: string;
 }; //모달에 사용되는 데이터

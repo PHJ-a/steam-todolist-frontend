@@ -2,10 +2,15 @@ import styled from 'styled-components';
 import logo from '../../assets/steam.png';
 
 const Header = () => {
+  const handleLogin = async () => {
+    window.location.href = `http://localhost:4000/login?returnTo=${encodeURIComponent(
+      'http://localhost:5173',
+    )}`;
+  };
   return (
     <HeaderContainer>
       <img src={logo} alt='logo' className='logo' />
-      <LoginButton>로그인</LoginButton>
+      <LoginButton onClick={handleLogin}>스팀 로그인</LoginButton>
     </HeaderContainer>
   );
 };

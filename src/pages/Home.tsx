@@ -77,7 +77,7 @@ const MyCalendar = () => {
       achievementDesc: '엘든링 도전과제 설명',
       startDate: event.start!,
       endDate: event.end!,
-      isCompleted: true,
+      iscompleted: true,
       progress: 85,
       icon: '',
     };

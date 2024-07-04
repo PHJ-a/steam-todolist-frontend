@@ -32,7 +32,7 @@ const TodoModal = ({ open, close, data }: TodoModalProps) => {
             <ProgressFill progress={data?.progress || 0} />
           </ProgressBar>
         </ProgressContainer>
-        {data?.isCompleted ? (
+        {data?.iscompleted ? (
           <Message className='SuccessMessage'>
             축하합니다 도전과제 성공하셨습니다!
           </Message>
