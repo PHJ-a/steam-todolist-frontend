@@ -137,7 +137,7 @@ const ProgressFill = styled.div<{ progress: number }>`
 `;
 
 const Message = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 18px;
   font-weight: bold;
   text-align: center;
