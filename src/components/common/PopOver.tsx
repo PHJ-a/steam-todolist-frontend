@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import axiosInstance from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 type PopOverProps = {
   close: () => void;
@@ -10,6 +11,7 @@ type PopOverProps = {
 const PopOver = ({ close }: PopOverProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
   const { setIsLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -36,11 +38,16 @@ const PopOver = ({ close }: PopOverProps) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [close]);
+
+  const handleNavigate = () => {
+    navigate('/completed');
+    close();
+  };
   return (
     <StyledPopOver ref={popoverRef} onClick={(e) => e.stopPropagation()}>
       <ul className='menus'>
         <li onClick={handleLogout}>로그아웃</li>
-        <li>완료한 도전과제</li>
+        <li onClick={handleNavigate}>완료한 도전과제</li>
       </ul>
     </StyledPopOver>
   );

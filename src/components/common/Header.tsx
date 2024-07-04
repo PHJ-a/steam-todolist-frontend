@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import logo from '../../assets/steam.png';
 import { useAuth } from '../../context/AuthContext';
 import UserProfile from '../User/UserProfile';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const { isLoggedIn } = useAuth();
@@ -17,7 +18,10 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <img src={logo} alt='logo' className='logo' />
+      <Link to='/'>
+        <img src={logo} alt='logo' className='logo' />
+      </Link>
+
       {isLoggedIn ? (
         <UserProfile />
       ) : (
