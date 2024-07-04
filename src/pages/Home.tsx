@@ -8,6 +8,8 @@ import useModal from '../hooks/useModal';
 import TodoModal from '../components/modal/TodoModal';
 import { ModalData, Todo } from '../models/type';
 import AchievementList from '../components/List';
+import { useAuth } from '../context/AuthContext';
+import Empty from '../components/Empty';
 
 moment.locale('ko-KR');
 
@@ -20,6 +22,7 @@ type CustomEvent = Event & {
 };
 
 const MyCalendar = () => {
+  const { isLoggedIn } = useAuth();
   const { open, openModal, closeModal } = useModal();
   const [todos, setTodos] = useState<Todo[]>([
     {
@@ -91,24 +94,34 @@ const MyCalendar = () => {
 
   return (
     <CalendarContainer>
-      <Calendar
-        className='my-calendar'
-        localizer={localizer}
-        events={colorsTodo}
-        startAccessor='start'
-        endAccessor='end'
-        eventPropGetter={eventStyleGetter}
-        onSelectEvent={handleSelectEvent}
-        messages={{
-          previous: '이전',
-          next: '다음',
-          today: '오늘',
-          month: '월',
-          week: '주',
-          day: '일',
-          agenda: '일정',
-        }}
-      />
+      {isLoggedIn ? (
+        <Calendar
+          className='my-calendar'
+          localizer={localizer}
+          events={colorsTodo}
+          startAccessor='start'
+          endAccessor='end'
+          eventPropGetter={eventStyleGetter}
+          onSelectEvent={handleSelectEvent}
+          messages={{
+            previous: '이전',
+            next: '다음',
+            today: '오늘',
+            month: '월',
+            week: '주',
+            day: '일',
+            agenda: '일정',
+          }}
+        />
+      ) : (
+        <Empty
+          onLoginClick={() =>
+            (window.location.href = `http://localhost:4000/login?returnTo=${encodeURIComponent(
+              'http://localhost:5173',
+            )}`)
+          }
+        />
+      )}
       <AchievementListContainer>
         <AchievementList todos={todos} />
       </AchievementListContainer>
@@ -125,6 +138,26 @@ const CalendarContainer = styled.div`
 
   .my-calendar {
     flex: 3;
+  }
+`;
+const LoginMessage = styled.div`
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f2f2f2;
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    cursor: pointer;
   }
 `;
 const AchievementListContainer = styled.div`

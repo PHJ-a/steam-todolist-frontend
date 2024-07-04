@@ -1,20 +1,22 @@
 import styled from 'styled-components';
 import { Todo } from '../models/type';
+import { useAuth } from '../context/AuthContext';
 
 type AchievementListProps = {
   todos: Todo[];
 };
 
 const AchievementList = ({ todos }: AchievementListProps) => {
+  const { isLoggedIn } = useAuth();
   return (
     <ListContainer>
       <div className='title'>
         <h2>도전과제 수</h2>
-        <h2>{todos.length} / 3</h2>
+        <h2>{isLoggedIn ? todos.length : 0} / 3</h2>
       </div>
 
       {todos.map((todo, index) => (
-        <AchievementItem key={index}>
+        <AchievementItem key={index} isLoggedIn={isLoggedIn}>
           <div className='header'>
             <GameName>{todo.gameName}</GameName>
             <div className='exit' onClick={() => alert('삭제합니다')}>
@@ -66,11 +68,21 @@ const ListContainer = styled.div`
   }
 `;
 
-const AchievementItem = styled.div`
+type AchievementItemProps = {
+  isLoggedIn: boolean;
+};
+const AchievementItem = styled.div<AchievementItemProps>`
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #fff;
+  ${(props) =>
+    !props.isLoggedIn &&
+    `
+    filter: blur(2px);
+    pointer-events: none; /* 클릭 이벤트 무시 */
+  `}
+
   .header {
     display: flex;
     justify-content: space-between;
