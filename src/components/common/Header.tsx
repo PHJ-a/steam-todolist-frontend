@@ -1,16 +1,24 @@
 import styled from 'styled-components';
 import logo from '../../assets/steam.png';
+import { useAuth } from '../../context/AuthContext';
 
 const Header = () => {
+  const { isLoggedIn } = useAuth();
   const handleLogin = async () => {
-    window.location.href = `http://localhost:4000/login?returnTo=${encodeURIComponent(
-      'http://localhost:5173',
-    )}`;
+    try {
+      window.location.href = `http://localhost:4000/login?returnTo=${encodeURIComponent(
+        'http://localhost:5173',
+      )}`;
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <HeaderContainer>
       <img src={logo} alt='logo' className='logo' />
-      <LoginButton onClick={handleLogin}>스팀 로그인</LoginButton>
+      <LoginButton onClick={handleLogin}>
+        {isLoggedIn ? '스팀 로그아웃' : '스팀 로그인'}
+      </LoginButton>
     </HeaderContainer>
   );
 };
