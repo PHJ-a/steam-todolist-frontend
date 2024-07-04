@@ -15,7 +15,8 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const isLoggedIn = document.cookie.includes('isLoggedin');
+      const isLoggedIn = document.cookie.includes('true');
+
       setIsLoggedIn(isLoggedIn);
     };
 
