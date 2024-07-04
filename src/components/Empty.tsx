@@ -5,7 +5,7 @@ const Empty = ({ onLoginClick }: { onLoginClick: () => void }) => {
   return (
     <EmptyStateContainer>
       <img className='logo' src={icon} alt='Logo' />
-      <p className='message'>로그인 후에 달력을 이용할 수 있습니다.</p>
+      <p className='message'>로그인 후 서비스 이용가능하십니다.</p>
       <button className='loginBtn' onClick={onLoginClick}>
         로그인
       </button>
