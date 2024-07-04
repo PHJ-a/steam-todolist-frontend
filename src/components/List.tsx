@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { Todo } from '../models/type';
+import { useAuth } from '../context/AuthContext';
 
 type AchievementListProps = {
   todos: Todo[];
 };
 
 const AchievementList = ({ todos }: AchievementListProps) => {
+  const { isLoggedIn } = useAuth();
   return (
     <ListContainer>
       <div className='title'>
