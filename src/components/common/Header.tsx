@@ -13,6 +13,7 @@ const Header = () => {
       console.log(e);
     }
   };
+
   return (
     <HeaderContainer>
       <img src={logo} alt='logo' className='logo' />

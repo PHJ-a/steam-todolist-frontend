@@ -17,6 +17,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
       <div id='modalRoot' />
+      <div id='snackbarRoot' />
     </div>
   );
 };
