@@ -17,8 +17,6 @@ const localizer = momentLocalizer(moment);
 
 type CustomEvent = Event & {
   id: number;
-  achievementId: number;
-  gameId: number;
 };
 
 const MyCalendar = () => {
@@ -31,8 +29,10 @@ const MyCalendar = () => {
       achievementId: 101,
       gameId: 201,
       gameName: '엘든링',
-      startDate: new Date('2024-06-22T00:00:00'),
-      endDate: new Date('2024-07-01T00:00:00'),
+      start: new Date('2024-06-22T00:00:00'),
+      end: new Date('2024-07-01T00:00:00'),
+      isFinished: false,
+      userId: 1,
     },
     {
       id: 2,
@@ -40,8 +40,10 @@ const MyCalendar = () => {
       achievementId: 102,
       gameId: 202,
       gameName: '엘든링',
-      startDate: new Date('2024-06-28T00:00:00'),
-      endDate: null,
+      start: new Date('2024-06-28T00:00:00'),
+      end: null,
+      isFinished: false,
+      userId: 2,
     },
   ]);
 
@@ -52,10 +54,8 @@ const MyCalendar = () => {
   const colorsTodo: CustomEvent[] = todos.map((todo, index) => ({
     id: todo.id,
     title: todo.achievementTitle,
-    achievementId: todo.achievementId,
-    gameId: todo.gameId,
-    start: todo.startDate,
-    end: todo.endDate || new Date(),
+    start: todo.start,
+    end: todo.end || new Date(),
     resource: { color: colors[index % colors.length] },
   }));
 
@@ -74,15 +74,16 @@ const MyCalendar = () => {
 
   const handleSelectEvent = (event: CustomEvent) => {
     const data: ModalData = {
+      id: 1,
       gameName: `엘든링`,
-      gameImage: '../images/eldenring.jpg',
-      achievementTitle: '엘든링 도전과제',
-      achievementDesc: '엘든링 도전과제 설명',
-      startDate: event.start!,
-      endDate: event.end!,
-      iscompleted: true,
-      progress: 85,
-      icon: '',
+      gameId: 123,
+      achieveName: '엘든링 도전과제',
+      achieveDescription: '엘든링 도전과제 설명',
+      start: event.start!,
+      end: event.end!,
+      completedRate: 85,
+      achieveId: 1,
+      achieveIcon: '',
     };
     setEventData(data);
     openModal();
@@ -110,13 +111,14 @@ const MyCalendar = () => {
             month: '월',
             week: '주',
             day: '일',
+
             agenda: '일정',
           }}
         />
       ) : (
         <Empty
           onLoginClick={() =>
-            (window.location.href = `http://localhost:4000/login?returnTo=${encodeURIComponent(
+            (window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
               'http://localhost:5173',
             )}`)
           }
@@ -140,26 +142,7 @@ const CalendarContainer = styled.div`
     flex: 3;
   }
 `;
-const LoginMessage = styled.div`
-  flex: 3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: #f2f2f2;
 
-  p {
-    margin-bottom: 1rem;
-  }
-
-  button {
-    padding: 10px 20px;
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-`;
 const AchievementListContainer = styled.div`
   flex: 1;
   height: 100vh;

@@ -8,7 +8,7 @@ const Header = () => {
   const { isLoggedIn } = useAuth();
   const handleLogin = async () => {
     try {
-      window.location.href = `http://localhost:4000/login?returnTo=${encodeURIComponent(
+      window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
         'http://localhost:5173',
       )}`;
     } catch (e) {

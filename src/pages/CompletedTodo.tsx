@@ -183,6 +183,7 @@ const TableHeaderCell = styled.th`
 `;
 
 const TableRow = styled.tr`
+  cursor: pointer;
   &:nth-child(even) {
     background-color: #f8f9fa;
   }
