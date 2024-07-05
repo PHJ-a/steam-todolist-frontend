@@ -1,6 +1,5 @@
 import { HttpResponse, http } from 'msw';
-import { faker } from '@faker-js/faker';
-import { Game } from '../pages/CreateTodo';
+
 const data = [
   {
     appid: 289070,

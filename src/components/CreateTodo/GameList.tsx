@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Game } from '../../pages/CreateTodo';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo, useEffect, Dispatch } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import GameItem from './GameItem';
 
