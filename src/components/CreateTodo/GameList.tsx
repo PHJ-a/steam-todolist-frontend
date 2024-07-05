@@ -1,17 +1,19 @@
 import styled from 'styled-components';
 import { Game } from '../../pages/CreateTodo';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Dispatch } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import GameItem from './GameItem';
 
 export interface GameListProps {
   games: Game[];
+  onSelectGame: React.Dispatch<React.SetStateAction<Game | null>>;
+  selectedGame: number | undefined;
 }
 
 const offset = 5;
 
-const GameList = ({ games }: GameListProps) => {
+const GameList = ({ games, onSelectGame, selectedGame }: GameListProps) => {
   const [index, setIndex] = useState<number>(0);
   const [leaving, setLeaving] = useState(false);
   const [onMouseOver, setOnMouseOver] = useState(false);
@@ -122,7 +124,12 @@ const GameList = ({ games }: GameListProps) => {
                   {filteredGames
                     .slice(index * offset, index * offset + offset)
                     .map((game) => (
-                      <GameItem key={game.appid} game={game} />
+                      <GameItem
+                        isSelected={game.appid === selectedGame}
+                        key={game.appid}
+                        game={game}
+                        setGame={onSelectGame}
+                      />
                     ))}
                 </Row>
               </AnimatePresence>
