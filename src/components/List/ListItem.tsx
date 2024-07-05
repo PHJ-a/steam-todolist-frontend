@@ -31,16 +31,14 @@ const ListItem = ({ todo, isLoggedIn }: ListItemProps) => {
 
       <AchievementTitle>{todo.achievementTitle}</AchievementTitle>
       <TimeInfo>
-        시작시간: {todo.startDate.toLocaleString()}
+        시작시간: {todo.start.toLocaleString()}
         <br />
         경과시간:{' '}
-        {todo.endDate
-          ? todo.endDate.toLocaleString()
+        {todo.end
+          ? todo.end.toLocaleString()
           : new Date(Date.now()).toLocaleString()}
       </TimeInfo>
-      <Status isCompleted={todo.endDate}>
-        {todo.endDate ? '완료됨' : '미완료'}
-      </Status>
+      <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
       {snackbar}
     </AchievementItem>
   );

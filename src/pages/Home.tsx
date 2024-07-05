@@ -6,10 +6,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from 'styled-components';
 import useModal from '../hooks/useModal';
 import TodoModal from '../components/modal/TodoModal';
-import { ModalData, Todo } from '../models/type';
+import { ModalData } from '../models/type';
 import AchievementList from '../components/List/List';
 import { useAuth } from '../context/AuthContext';
 import Empty from '../components/Empty';
+import useTodos from '../hooks/useTodos';
 
 moment.locale('ko-KR');
 
@@ -22,30 +23,7 @@ type CustomEvent = Event & {
 const MyCalendar = () => {
   const { isLoggedIn } = useAuth();
   const { open, openModal, closeModal } = useModal();
-  const [todos, setTodos] = useState<Todo[]>([
-    {
-      id: 1,
-      achievementTitle: '엘든링 도전과제 1',
-      achievementId: 101,
-      gameId: 201,
-      gameName: '엘든링',
-      start: new Date('2024-06-22T00:00:00'),
-      end: new Date('2024-07-01T00:00:00'),
-      isFinished: false,
-      userId: 1,
-    },
-    {
-      id: 2,
-      achievementTitle: '나의 도전과제 2',
-      achievementId: 102,
-      gameId: 202,
-      gameName: '엘든링',
-      start: new Date('2024-06-28T00:00:00'),
-      end: null,
-      isFinished: false,
-      userId: 2,
-    },
-  ]);
+  const { todos, getModalData } = useTodos();
 
   const [eventData, setEventData] = useState<ModalData | null>(null);
 
@@ -72,8 +50,8 @@ const MyCalendar = () => {
     return { style };
   };
 
-  const handleSelectEvent = (event: CustomEvent) => {
-    const data: ModalData = {
+  const handleSelectEvent = async (event: CustomEvent) => {
+    const data2: ModalData = {
       id: 1,
       gameName: `엘든링`,
       gameId: 123,
@@ -85,7 +63,8 @@ const MyCalendar = () => {
       achieveId: 1,
       achieveIcon: '',
     };
-    setEventData(data);
+    // const data = await getModalData(event.id);
+    setEventData(data2); //data || data2
     openModal();
   };
 

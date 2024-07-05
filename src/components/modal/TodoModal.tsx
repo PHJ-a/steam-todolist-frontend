@@ -21,18 +21,18 @@ const TodoModal = ({ open, close, data }: TodoModalProps) => {
         </GameImageWrapper>
         <Title>
           <img src={icon} className='icon' alt='Achievement Icon' />
-          <div className='title'>{data?.achievementTitle}</div>
+          <div className='title'>{data?.achieveName}</div>
         </Title>
-        <ChallengeDesc>{data?.achievementDesc}</ChallengeDesc>
+        <ChallengeDesc>{data?.achieveDescription}</ChallengeDesc>
         <StartTime>시작 시간: 2024년 7월 1일 14시 51분</StartTime>
         <ElapsedTime>경과 시간: 10시간</ElapsedTime>
         <ProgressContainer>
-          <p>달성률 {data?.progress}%</p>
+          <p>달성률 {data?.completedRate}%</p>
           <ProgressBar>
-            <ProgressFill progress={data?.progress || 0} />
+            <ProgressFill progress={data?.completedRate || 0} />
           </ProgressBar>
         </ProgressContainer>
-        {data?.iscompleted ? (
+        {data?.end ? (
           <Message className='SuccessMessage'>
             축하합니다 도전과제 성공하셨습니다!
           </Message>
