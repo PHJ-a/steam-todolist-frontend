@@ -50,13 +50,7 @@ const useTodos = () => {
     }
   }, [isLoggedIn]);
 
-  const getModalData = async (id: number) => {
-    const res = await axiosInstance.get(`/todo/${id}`);
-    const data = res.data;
-    return data;
-  };
-
-  return { todos, getModalData };
+  return { todos };
 };
 
 export default useTodos;

@@ -22,8 +22,8 @@ type CustomEvent = Event & {
 
 const MyCalendar = () => {
   const { isLoggedIn } = useAuth();
-  const { open, openModal, closeModal } = useModal();
-  const { todos, getModalData } = useTodos();
+  const { open, openModal, closeModal, getModalData } = useModal();
+  const { todos } = useTodos();
 
   const [eventData, setEventData] = useState<ModalData | null>(null);
 

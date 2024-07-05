@@ -1,115 +1,43 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import useCompletedTodos from '../hooks/useCompletedTodo';
+import useModal from '../hooks/useModal';
+import { ModalData } from '../models/type';
+import TodoModal from '../components/modal/TodoModal';
 
-const achievementsData = [
-  {
-    id: 1,
-    achievementTitle: '엘든링 도전과제 1',
-    achievementId: 101,
-    gameId: 201,
-    gameName: '엘든링',
-    startDate: new Date('2024-06-22T00:00:00'),
-    endDate: new Date('2024-07-01T00:00:00'),
-  },
-  {
-    id: 2,
-    achievementTitle: '엘든링 도전과제 2',
-    achievementId: 102,
-    gameId: 201,
-    gameName: '엘든링',
-    startDate: new Date('2024-06-25T00:00:00'),
-    endDate: new Date('2024-07-05T00:00:00'),
-  },
-  {
-    id: 3,
-    achievementTitle: '다른 게임 도전과제 1',
-    achievementId: 103,
-    gameId: 202,
-    gameName: '다른 게임',
-    startDate: new Date('2024-07-01T00:00:00'),
-    endDate: new Date('2024-07-10T00:00:00'),
-  },
-  {
-    id: 4,
-    achievementTitle: '다른 게임 도전과제 2',
-    achievementId: 104,
-    gameId: 202,
-    gameName: '다른 게임',
-    startDate: new Date('2024-07-01T00:00:00'),
-    endDate: new Date('2024-07-10T00:00:00'),
-  },
-  {
-    id: 5,
-    achievementTitle: '게임 도전과제 1',
-    achievementId: 105,
-    gameId: 203,
-    gameName: '게임',
-    startDate: new Date('2024-07-05T00:00:00'),
-    endDate: new Date('2024-07-15T00:00:00'),
-  },
-  {
-    id: 6,
-    achievementTitle: '게임 도전과제 2',
-    achievementId: 106,
-    gameId: 203,
-    gameName: '게임',
-    startDate: new Date('2024-07-10T00:00:00'),
-    endDate: new Date('2024-07-20T00:00:00'),
-  },
-  {
-    id: 7,
-    achievementTitle: '퀘스트 도전과제 1',
-    achievementId: 107,
-    gameId: 204,
-    gameName: '퀘스트',
-    startDate: new Date('2024-07-12T00:00:00'),
-    endDate: new Date('2024-07-22T00:00:00'),
-  },
-  {
-    id: 8,
-    achievementTitle: '퀘스트 도전과제 2',
-    achievementId: 108,
-    gameId: 204,
-    gameName: '퀘스트',
-    startDate: new Date('2024-07-15T00:00:00'),
-    endDate: new Date('2024-07-25T00:00:00'),
-  },
-  {
-    id: 9,
-    achievementTitle: '챌린지 도전과제 1',
-    achievementId: 109,
-    gameId: 205,
-    gameName: '챌린지',
-    startDate: new Date('2024-07-18T00:00:00'),
-    endDate: new Date('2024-07-28T00:00:00'),
-  },
-  {
-    id: 10,
-    achievementTitle: '챌린지 도전과제 2',
-    achievementId: 110,
-    gameId: 205,
-    gameName: '챌린지',
-    startDate: new Date('2024-07-20T00:00:00'),
-    endDate: new Date('2024-07-30T00:00:00'),
-  },
-];
-
-const itemsPerPage = 10; // 페이지 당 항목 수
+const itemsPerPage = 8; // 페이지 당 항목 수
 
 const AchievementTable = () => {
+  const { todos } = useCompletedTodos();
+  const { open, openModal, closeModal, getModalData } = useModal();
+  const [modalData, setmodalData] = useState<ModalData | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   // 현재 페이지의 데이터 계산
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = achievementsData.slice(
-    indexOfFirstItem,
-    indexOfLastItem,
-  );
+  const currentItems = todos.slice(indexOfFirstItem, indexOfLastItem);
 
   // 페이지 변경 핸들러
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+  };
+  const hanldeModal = async (id: number) => {
+    const data2: ModalData = {
+      id: 1,
+      gameName: `엘든링`,
+      gameId: 123,
+      achieveName: '엘든링 도전과제',
+      achieveDescription: '엘든링 도전과제 설명',
+      start: new Date('2024-06-22T00:00:00'),
+      end: new Date('2024-06-22T12:00:00'),
+      completedRate: 85,
+      achieveId: 1,
+      achieveIcon: '',
+    };
+    // const data = await getModalData(id);
+    setmodalData(data2);
+    openModal();
   };
 
   return (
@@ -125,14 +53,13 @@ const AchievementTable = () => {
           </tr>
         </TableHeader>
         <tbody>
-          {currentItems.map((achievement) => (
-            <TableRow key={achievement.id}>
-              <TableCell>{achievement.achievementTitle}</TableCell>
-              <TableCell>{achievement.gameName}</TableCell>
-              <TableCell>{achievement.startDate.toLocaleString()}</TableCell>
+          {currentItems.map((todo) => (
+            <TableRow key={todo.id} onClick={() => hanldeModal(todo.id)}>
+              <TableCell>{todo.achievementTitle}</TableCell>
+              <TableCell>{todo.gameName}</TableCell>
+              <TableCell>{todo.start.toLocaleString()}</TableCell>
               <TableCell>
-                {(achievement.endDate.getTime() -
-                  achievement.startDate.getTime()) /
+                {(todo.end!.getTime() - todo.start.getTime()) /
                   (1000 * 60 * 60) +
                   '시간'}
               </TableCell>
@@ -153,6 +80,7 @@ const AchievementTable = () => {
           다음
         </PaginationButton>
       </Pagination>
+      <TodoModal open={open} close={closeModal} data={modalData} />
     </Wrapper>
   );
 };
