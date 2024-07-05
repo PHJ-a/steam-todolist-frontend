@@ -3,15 +3,15 @@ import { faker } from '@faker-js/faker';
 import { Game } from '../pages/CreateTodo';
 const data = [
   {
-    appid: 214950,
+    appid: 289070,
     name: 'Total War: ROME II - Emperor Edition',
   },
   {
-    appid: 242050,
+    appid: 440,
     name: "Assassin's Creed IV Black Flag",
   },
   {
-    appid: 255710,
+    appid: 570,
     name: 'Cities: Skylines',
   },
   {
@@ -244,7 +244,7 @@ const data = [
   },
 ];
 
-export const games = http.get('http://localhost:9999/games', () => {
+export const games = http.get('http://localhost:9999/game', () => {
   return HttpResponse.json(
     { data },
     {

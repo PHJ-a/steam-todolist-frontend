@@ -1,0 +1,255 @@
+import { HttpResponse, http } from 'msw';
+
+const data1 = {
+  achievements: [
+    {
+      id: 54,
+      displayName: '아무도 스페인식의 종교재판을 바라지 않아',
+      description: '스페인으로 종교재판 시작',
+      achieved: 0,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.50',
+    },
+    {
+      id: 55,
+      displayName: '길가메시 서사시',
+      description: '수메르로 첫 걸작 저서 보유',
+      achieved: 0,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 56,
+      displayName: '박해준',
+      description: '박해준 개발자 되기',
+      achieved: 0,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 57,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 58,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 59,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 60,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 61,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 62,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 63,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 64,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 65,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 66,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 67,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 68,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 69,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 70,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 71,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 72,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 73,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 74,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 75,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+    {
+      id: 76,
+      displayName: '왕',
+      description: '왕 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/289070/c29e93fd82f9033ea2029b866c5bc29f1813d649.jpg',
+      completedRate: '3.80',
+    },
+  ],
+  gameId: 289070,
+};
+
+const data2 = {
+  achievements: [
+    {
+      id: 60,
+      displayName: '기적의 낙원',
+      description: '상상 속 낙원에 도달',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/440/abdef1234567890.jpg',
+      completedRate: '4.20',
+    },
+    {
+      id: 61,
+      displayName: '불멸의 전사',
+      description: '최고의 전사되기',
+      achieved: 0,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/440/abdef1234567890.jpg',
+      completedRate: '2.70',
+    },
+    {
+      id: 62,
+      displayName: '수호신',
+      description: '모든 적을 물리치기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/440/abdef1234567890.jpg',
+      completedRate: '5.00',
+    },
+  ],
+  gameId: 440,
+};
+
+const data3 = {
+  achievements: [
+    {
+      id: 70,
+      displayName: '궁극의 마법사',
+      description: '최강의 마법사 되기',
+      achieved: 1,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/570/xyz123456789.jpg',
+      completedRate: '6.90',
+    },
+    {
+      id: 71,
+      displayName: '비밀의 연금술사',
+      description: '모든 연금술 비법 익히기',
+      achieved: 0,
+      img: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/570/xyz123456789.jpg',
+      completedRate: '3.40',
+    },
+  ],
+  gameId: 570,
+};
+
+export const achievements = [
+  http.get('http://localhost:9999/achievements/289070', () => {
+    return HttpResponse.json({ data: data1 }, { status: 200 });
+  }),
+  http.get('http://localhost:9999/achievements/440', () => {
+    return HttpResponse.json({ data: data2 }, { status: 200 });
+  }),
+  http.get('http://localhost:9999/achievements/570', () => {
+    return HttpResponse.json({ data: data3 }, { status: 200 });
+  }),
+];
