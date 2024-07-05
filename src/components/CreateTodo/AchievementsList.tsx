@@ -122,11 +122,10 @@ const Tab = styled.button<{ isActive: boolean }>`
 `;
 
 const TabContent = styled(motion.div)`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
   width: 100%;
-  justify-content: center;
 `;
 
 export default AchievementsList;

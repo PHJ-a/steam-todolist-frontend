@@ -109,7 +109,9 @@ const CreateTodo = () => {
         </div>
       )}
       {selectedAchievementId !== null && (
-        <CreateButton onClick={handleCreateTodo}>생성하기</CreateButton>
+        <div className='button'>
+          <CreateButton onClick={handleCreateTodo}>생성하기</CreateButton>
+        </div>
       )}
     </CreateTodoStyle>
   );
@@ -124,16 +126,23 @@ const CreateTodoStyle = styled.div`
     margin-bottom: 20px;
   }
   padding: 10px;
+
+  .button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 `;
 
 const CreateButton = styled.button`
-  padding: 10px 20px;
+  padding: 15px 30px;
   background-color: #007bff;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  width: 200px;
 
   &:hover {
     background-color: #0056b3;
