@@ -5,11 +5,11 @@ import { useState, useMemo, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import GameItem from './GameItem';
 
-export interface GameListProps {
+export type GameListProps = {
   games: Game[];
   onSelectGame: React.Dispatch<React.SetStateAction<Game | null>>;
   selectedGame: number | undefined;
-}
+};
 
 const offset = 5;
 
@@ -93,58 +93,57 @@ const GameList = ({ games, onSelectGame, selectedGame }: GameListProps) => {
           onChange={handleSearchChange}
         />
       </SearchContainer>
+
       <GameListContainer>
-        <AnimatePresence>
-          {filteredGames.length > 0 ? (
-            <Slider
-              initial='hidden'
-              animate='visible'
-              exit='exit'
-              onMouseEnter={() => setOnMouseOver(true)}
-              onMouseLeave={() => setOnMouseOver(false)}>
-              {onMouseOver && index !== 0 && (
-                <div
-                  className='icon left-icon'
-                  onClick={() => handleIndexChange(-1)}>
-                  <FaChevronLeft />
-                </div>
-              )}
-              <AnimatePresence
-                initial={false}
+        {filteredGames.length > 0 ? (
+          <Slider
+            initial='hidden'
+            animate='visible'
+            exit='exit'
+            onMouseEnter={() => setOnMouseOver(true)}
+            onMouseLeave={() => setOnMouseOver(false)}>
+            {onMouseOver && index !== 0 && (
+              <div
+                className='icon left-icon'
+                onClick={() => handleIndexChange(-1)}>
+                <FaChevronLeft />
+              </div>
+            )}
+            <AnimatePresence
+              initial={false}
+              custom={direction}
+              onExitComplete={handleExitComplete}>
+              <Row
                 custom={direction}
-                onExitComplete={handleExitComplete}>
-                <Row
-                  custom={direction}
-                  variants={rowVariants}
-                  initial='hidden'
-                  animate='visible'
-                  exit='exit'
-                  transition={{ type: 'tween', duration: 0.7 }}
-                  key={index}>
-                  {filteredGames
-                    .slice(index * offset, index * offset + offset)
-                    .map((game) => (
-                      <GameItem
-                        isSelected={game.appid === selectedGame}
-                        key={game.appid}
-                        game={game}
-                        setGame={onSelectGame}
-                      />
-                    ))}
-                </Row>
-              </AnimatePresence>
-              {onMouseOver && index !== maxIndex && (
-                <div
-                  className='icon right-icon'
-                  onClick={() => handleIndexChange(1)}>
-                  <FaChevronRight />
-                </div>
-              )}
-            </Slider>
-          ) : (
-            <div>게임이 존재하지 않습니다.</div>
-          )}
-        </AnimatePresence>
+                variants={rowVariants}
+                initial='hidden'
+                animate='visible'
+                exit='exit'
+                transition={{ type: 'tween', duration: 0.7 }}
+                key={index}>
+                {filteredGames
+                  .slice(index * offset, index * offset + offset)
+                  .map((game) => (
+                    <GameItem
+                      isSelected={game.appid === selectedGame}
+                      key={game.appid}
+                      game={game}
+                      setGame={onSelectGame}
+                    />
+                  ))}
+              </Row>
+            </AnimatePresence>
+            {onMouseOver && index !== maxIndex && (
+              <div
+                className='icon right-icon'
+                onClick={() => handleIndexChange(1)}>
+                <FaChevronRight />
+              </div>
+            )}
+          </Slider>
+        ) : (
+          <div>게임이 존재하지 않습니다.</div>
+        )}
       </GameListContainer>
     </>
   );

@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Achievement } from '../../pages/CreateTodo';
 import AchievementItem from './AchievementItem';
+import { Achievement } from '../../pages/CreateTodo';
 
 type AchievementsListProps = {
   achievements: Achievement[];
-  onSelectAchievement: (id: number | null) => void;
-  selectedAchievementId: number | null;
+  onSelectAchievement: (achievement: Achievement | null) => void;
+  selectedAchievement: Achievement | null;
 };
 
 const AchievementsList = ({
   achievements,
   onSelectAchievement,
-  selectedAchievementId,
+  selectedAchievement,
 }: AchievementsListProps) => {
   const [activeTab, setActiveTab] = useState<'completed' | 'incomplete'>(
     'completed',
@@ -29,14 +29,20 @@ const AchievementsList = ({
 
   const handleClickTab = (tab: 'completed' | 'incomplete') => {
     if (leaving) return;
+
+    if (tab === activeTab) return;
+    setLeaving(true);
     setActiveTab(tab);
     onSelectAchievement(null);
-    setLeaving(true);
   };
 
   const handleExitComplete = () => {
-    setLeaving(false);
+    setLeaving((prev) => !prev);
   };
+
+  if (achievements.length === 0) {
+    return <p>도전과제가 없습니다.</p>;
+  }
 
   return (
     <Container>
@@ -54,6 +60,7 @@ const AchievementsList = ({
           미완료된 도전과제
         </Tab>
       </TabContainer>
+
       <AnimatePresence mode='wait' onExitComplete={handleExitComplete}>
         {activeTab === 'completed' ? (
           <TabContent
@@ -67,7 +74,11 @@ const AchievementsList = ({
                 key={achievement.id}
                 achievement={achievement}
                 onSelect={onSelectAchievement}
-                isSelected={achievement.id === selectedAchievementId}
+                isSelected={
+                  selectedAchievement
+                    ? achievement.id === selectedAchievement.id
+                    : false
+                }
               />
             ))}
           </TabContent>
@@ -83,7 +94,11 @@ const AchievementsList = ({
                 key={achievement.id}
                 achievement={achievement}
                 onSelect={onSelectAchievement}
-                isSelected={achievement.id === selectedAchievementId}
+                isSelected={
+                  selectedAchievement
+                    ? achievement.id === selectedAchievement.id
+                    : false
+                }
               />
             ))}
           </TabContent>

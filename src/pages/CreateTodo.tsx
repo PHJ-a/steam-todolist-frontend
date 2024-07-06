@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import GameList from '../components/CreateTodo/GameList';
-import { useEffect, useState } from 'react';
-import axiosInstance from '../api/axios';
 import AchievementsList from '../components/CreateTodo/AchievementsList';
+import useGames from '../hooks/useGames';
+import useAchievements from '../hooks/useAchievements';
+import axiosInstance from '../api/axios';
 
 export interface Game {
   appid: number;
@@ -18,70 +19,19 @@ export interface Achievement {
   completedRate: string;
 }
 
-export interface fetchAchievementsResponse {
-  achievements: Achievement[];
-  gameId: number;
-}
-
 const CreateTodo = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  const [game, setGame] = useState<Game | null>(null);
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
-  const [selectedAchievementId, setSelectedAchievementId] = useState<
-    number | null
-  >(null);
+  // 배경화면
+  const { games, selectedGame, setSelectedGame } = useGames();
+  const { achievements, selectedAchievement, setSelectedAchievement } =
+    useAchievements(selectedGame);
 
-  // 게임 목록 불러오기
-  useEffect(() => {
-    const fetchGames = async () => {
-      const data = await axiosInstance
-        .get('/game')
-        .then((res) => {
-          setGames(res.data);
-        })
-        .catch((err) => console.log(err));
-
-      return data;
-    };
-    fetchGames();
-  }, []);
-
-  // 게임 선택 시 해당 게임의 업적을 불러오기
-  useEffect(() => {
-    const fetchAchievements = async () => {
-      const data = await axiosInstance
-        .get<fetchAchievementsResponse>(`/achievements/${game?.appid}`)
-        .then((res) => {
-          setAchievements(res.data.achievements);
-        })
-        .catch((err) => {
-          setAchievements([]);
-          console.log(err);
-        });
-
-      return data;
-    };
-    // 게임이 선택되었을 때만 업적을 불러옴
-    if (game) {
-      fetchAchievements();
-      setSelectedAchievementId(null);
-    }
-  }, [game]);
-
-  // 업적 선택
-  const handleAchievementSelect = (id: number | null) => {
-    setSelectedAchievementId(id);
-  };
-
-  // Todo 생성
   const handleCreateTodo = async () => {
-    if (selectedAchievementId !== null) {
+    if (selectedAchievement !== null) {
       try {
         const response = await axiosInstance.post('/createTodo', {
-          id: selectedAchievementId,
+          id: selectedAchievement,
         });
         console.log('Response:', response.data);
-        // TODO: 성공 메시지 또는 처리 로직 추가
       } catch (error) {
         console.error('Error creating todo:', error);
       }
@@ -93,22 +43,22 @@ const CreateTodo = () => {
       <div>
         <h2>Games</h2>
         <GameList
-          onSelectGame={setGame}
+          onSelectGame={setSelectedGame}
           games={games}
-          selectedGame={game?.appid}
+          selectedGame={selectedGame?.appid}
         />
       </div>
-      {achievements.length > 0 && (
+      {selectedGame && (
         <div>
           <h2>Achievements</h2>
           <AchievementsList
             achievements={achievements}
-            onSelectAchievement={handleAchievementSelect}
-            selectedAchievementId={selectedAchievementId}
+            onSelectAchievement={setSelectedAchievement}
+            selectedAchievement={selectedAchievement}
           />
         </div>
       )}
-      {selectedAchievementId !== null && (
+      {selectedAchievement && (
         <div className='button'>
           <CreateButton onClick={handleCreateTodo}>생성하기</CreateButton>
         </div>
@@ -120,7 +70,9 @@ const CreateTodo = () => {
 const CreateTodoStyle = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   gap: 20px;
+
   h2 {
     margin: 0;
     margin-bottom: 20px;

@@ -5,7 +5,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 type AchievementItemProps = {
   achievement: Achievement;
-  onSelect: (id: number) => void;
+  onSelect: (achievement: Achievement) => void;
   isSelected: boolean;
 };
 
@@ -34,7 +34,7 @@ const AchievementItem = ({
 }: AchievementItemProps) => {
   const handleClick = () => {
     if (achievement.achieved === 0) {
-      onSelect(achievement.id);
+      onSelect(achievement);
     }
   };
 
