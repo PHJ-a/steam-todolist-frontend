@@ -29,13 +29,14 @@ const ListContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   padding: 20px;
-  background-color: #f4f4f4;
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 
   .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #66c0f4;
   }
 `;
 
