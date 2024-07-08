@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import useModal from '../hooks/useModal';
 import TodoModal from '../components/modal/TodoModal';
 import { ModalData, Todo } from '../models/type';
-import AchievementList from '../components/List';
+import AchievementList from '../components/List/List';
 import { useAuth } from '../context/AuthContext';
 import Empty from '../components/Empty';
 
