@@ -6,10 +6,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import styled from 'styled-components';
 import useModal from '../hooks/useModal';
 import TodoModal from '../components/modal/TodoModal';
-import { ModalData, Todo } from '../models/type';
+import { ModalData } from '../models/type';
 import AchievementList from '../components/List/List';
 import { useAuth } from '../context/AuthContext';
 import Empty from '../components/Empty';
+import useTodos from '../hooks/useTodos';
 
 moment.locale('ko-KR');
 
@@ -17,33 +18,12 @@ const localizer = momentLocalizer(moment);
 
 type CustomEvent = Event & {
   id: number;
-  achievementId: number;
-  gameId: number;
 };
 
 const MyCalendar = () => {
   const { isLoggedIn } = useAuth();
-  const { open, openModal, closeModal } = useModal();
-  const [todos, setTodos] = useState<Todo[]>([
-    {
-      id: 1,
-      achievementTitle: '엘든링 도전과제 1',
-      achievementId: 101,
-      gameId: 201,
-      gameName: '엘든링',
-      startDate: new Date('2024-06-22T00:00:00'),
-      endDate: new Date('2024-07-01T00:00:00'),
-    },
-    {
-      id: 2,
-      achievementTitle: '나의 도전과제 2',
-      achievementId: 102,
-      gameId: 202,
-      gameName: '엘든링',
-      startDate: new Date('2024-06-28T00:00:00'),
-      endDate: null,
-    },
-  ]);
+  const { open, openModal, closeModal, getModalData } = useModal();
+  const { todos } = useTodos();
 
   const [eventData, setEventData] = useState<ModalData | null>(null);
 
@@ -52,10 +32,8 @@ const MyCalendar = () => {
   const colorsTodo: CustomEvent[] = todos.map((todo, index) => ({
     id: todo.id,
     title: todo.achievementTitle,
-    achievementId: todo.achievementId,
-    gameId: todo.gameId,
-    start: todo.startDate,
-    end: todo.endDate || new Date(),
+    start: todo.start,
+    end: todo.end || new Date(),
     resource: { color: colors[index % colors.length] },
   }));
 
@@ -72,19 +50,21 @@ const MyCalendar = () => {
     return { style };
   };
 
-  const handleSelectEvent = (event: CustomEvent) => {
-    const data: ModalData = {
+  const handleSelectEvent = async (event: CustomEvent) => {
+    const data2: ModalData = {
+      id: 1,
       gameName: `엘든링`,
-      gameImage: '../images/eldenring.jpg',
-      achievementTitle: '엘든링 도전과제',
-      achievementDesc: '엘든링 도전과제 설명',
-      startDate: event.start!,
-      endDate: event.end!,
-      iscompleted: true,
-      progress: 85,
-      icon: '',
+      gameId: 123,
+      achieveName: '엘든링 도전과제',
+      achieveDescription: '엘든링 도전과제 설명',
+      start: event.start!,
+      end: event.end!,
+      completedRate: 85,
+      achieveId: 1,
+      achieveIcon: '',
     };
-    setEventData(data);
+    // const data = await getModalData(event.id);
+    setEventData(data2); //data || data2
     openModal();
   };
 
@@ -110,13 +90,14 @@ const MyCalendar = () => {
             month: '월',
             week: '주',
             day: '일',
+
             agenda: '일정',
           }}
         />
       ) : (
         <Empty
           onLoginClick={() =>
-            (window.location.href = `http://localhost:4000/login?returnTo=${encodeURIComponent(
+            (window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
               'http://localhost:5173',
             )}`)
           }
@@ -140,26 +121,7 @@ const CalendarContainer = styled.div`
     flex: 3;
   }
 `;
-const LoginMessage = styled.div`
-  flex: 3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: #f2f2f2;
 
-  p {
-    margin-bottom: 1rem;
-  }
-
-  button {
-    padding: 10px 20px;
-    background-color: #1a73e8;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-`;
 const AchievementListContainer = styled.div`
   flex: 1;
   height: 100vh;

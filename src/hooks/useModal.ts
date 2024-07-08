@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import axiosInstance from '../api/axios';
 
 const useModal = () => {
   const [open, toggleModal] = useState(false);
@@ -9,10 +10,17 @@ const useModal = () => {
     toggleModal(false);
   }, []);
 
+  const getModalData = async (id: number) => {
+    const res = await axiosInstance.get(`/todo/${id}`);
+    const data = res.data;
+    return data;
+  };
+
   return {
     open,
     openModal,
     closeModal,
+    getModalData,
   };
 };
 
