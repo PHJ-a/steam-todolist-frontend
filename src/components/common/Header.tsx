@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import logo from '../../assets/steam.png';
 import { useAuth } from '../../context/AuthContext';
+import UserProfile from '../User/UserProfile';
 
 const Header = () => {
   const { isLoggedIn } = useAuth();
@@ -17,9 +18,11 @@ const Header = () => {
   return (
     <HeaderContainer>
       <img src={logo} alt='logo' className='logo' />
-      <LoginButton onClick={handleLogin}>
-        {isLoggedIn ? '스팀 로그아웃' : '스팀 로그인'}
-      </LoginButton>
+      {isLoggedIn ? (
+        <UserProfile />
+      ) : (
+        <LoginButton onClick={handleLogin}>{'스팀 로그인'}</LoginButton>
+      )}
     </HeaderContainer>
   );
 };
