@@ -11,13 +11,13 @@ const useAchievements = (game: Game | null) => {
     const fetchAchievements = async () => {
       if (!game) return;
       try {
-        const response = await axiosInstance.get(`/achievements/${game.appid}`);
+        const response = await axiosInstance.get(`/achievement/${game.appid}`);
         setAchievements(response.data.achievements);
-        setSelectedAchievement(null); // Reset selected achievement when game changes
       } catch (err) {
         setAchievements([]);
         console.error(err);
       }
+      setSelectedAchievement(null);
     };
 
     fetchAchievements();

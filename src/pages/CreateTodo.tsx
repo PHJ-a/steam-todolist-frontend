@@ -4,6 +4,8 @@ import AchievementsList from '../components/CreateTodo/AchievementsList';
 import useGames from '../hooks/useGames';
 import useAchievements from '../hooks/useAchievements';
 import axiosInstance from '../api/axios';
+import useTodos from '../hooks/useTodos';
+import { useNavigate } from 'react-router-dom';
 
 export interface Game {
   appid: number;
@@ -20,19 +22,22 @@ export interface Achievement {
 }
 
 const CreateTodo = () => {
-  // 배경화면
   const { games, selectedGame, setSelectedGame } = useGames();
   const { achievements, selectedAchievement, setSelectedAchievement } =
     useAchievements(selectedGame);
+  const { todos } = useTodos();
+  const navigate = useNavigate();
 
   const handleCreateTodo = async () => {
     if (selectedAchievement !== null) {
       try {
-        const response = await axiosInstance.post('/createTodo', {
-          id: selectedAchievement,
+        const response = await axiosInstance.post('/todo', {
+          id: selectedAchievement.id,
         });
-        console.log('Response:', response.data);
-      } catch (error) {
+        // 성공시 home으로 이동
+        navigate('/');
+      } catch (error: any) {
+        // TODO: 이미 생성된 todo인 경우 에러 처리 추가 예정
         console.error('Error creating todo:', error);
       }
     }
@@ -59,8 +64,15 @@ const CreateTodo = () => {
         </div>
       )}
       {selectedAchievement && (
-        <div className='button'>
-          <CreateButton onClick={handleCreateTodo}>생성하기</CreateButton>
+        <div className='button-container'>
+          {todos.length >= 3 && (
+            <div className='warning-message'>
+              Todo는 최대 3개까지만 생성할 수 있습니다.
+            </div>
+          )}
+          <CreateButton onClick={handleCreateTodo} disabled={todos.length >= 3}>
+            Todo 생성하기 {`${todos.length + 1}/3`}
+          </CreateButton>
         </div>
       )}
     </CreateTodoStyle>
@@ -79,10 +91,18 @@ const CreateTodoStyle = styled.div`
   }
   padding: 10px;
 
-  .button {
+  .button-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-top: 20px;
+    gap: 10px;
+  }
+
+  .warning-message {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
   }
 `;
 
@@ -95,9 +115,18 @@ const CreateButton = styled.button`
   cursor: pointer;
   font-size: 16px;
   width: 200px;
+  transition: background-color 0.3s ease, transform 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
   }
 `;
 
