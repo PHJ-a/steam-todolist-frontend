@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
+import { AuthContextProvider } from './context/AuthContext.tsx';
 
 async function renderApp() {
   if (process.env.NODE_ENV === 'development') {
@@ -14,7 +15,9 @@ async function renderApp() {
 
   root.render(
     <React.StrictMode>
-      <App />
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
     </React.StrictMode>,
   );
 }

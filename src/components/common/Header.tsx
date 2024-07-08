@@ -1,11 +1,32 @@
 import styled from 'styled-components';
 import logo from '../../assets/steam.png';
+import { useAuth } from '../../context/AuthContext';
+import UserProfile from '../User/UserProfile';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
+  const { isLoggedIn } = useAuth();
+  const handleLogin = async () => {
+    try {
+      window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
+        'http://localhost:5173',
+      )}`;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <HeaderContainer>
-      <img src={logo} alt='logo' className='logo' />
-      <LoginButton>로그인</LoginButton>
+      <Link to='/'>
+        <img src={logo} alt='logo' className='logo' />
+      </Link>
+
+      {isLoggedIn ? (
+        <UserProfile />
+      ) : (
+        <LoginButton onClick={handleLogin}>{'스팀 로그인'}</LoginButton>
+      )}
     </HeaderContainer>
   );
 };
