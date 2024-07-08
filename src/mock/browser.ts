@@ -4,4 +4,4 @@ import { achievements } from './achievements';
 
 const handlers = [games, ...achievements];
 
-export const worker = setupWorker(...handlers);
+export const worker = setupWorker();
