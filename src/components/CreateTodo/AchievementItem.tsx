@@ -52,11 +52,13 @@ const AchievementItem = ({
           <FaCheckCircle />
         </div>
       )}
-      <img src={achievement.img} alt={achievement.displayName} />
+      <div className='img'>
+        <img src={achievement.img} alt={achievement.displayName} />
+      </div>
       <div>
         <h3>{achievement.displayName}</h3>
         <p>{achievement.description}</p>
-        <p>달성률: {achievement.completedRate}%</p>
+        <p>전체 플레이어 달성률: {achievement.completedRate}%</p>
       </div>
     </AchievementItemStyle>
   );
@@ -84,14 +86,14 @@ const AchievementItemStyle = styled(motion.div)<{
   box-shadow: ${({ achieved }) =>
     achieved === 1 ? '0 4px 15px rgba(0, 0, 0, 0.2)' : 'none'};
   position: relative;
-  overflow: hidden;
   transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 
-  img {
-    width: 100px;
-    height: 100px;
+  .img {
+    width: 64px;
     margin-bottom: 10px;
-    border-radius: 50%;
+  }
+  img {
+    width: 100%;
   }
 
   h3 {
