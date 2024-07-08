@@ -244,10 +244,7 @@ const data = [
 ];
 
 export const games = http.get('http://localhost:9999/game', () => {
-  return HttpResponse.json(
-    { data },
-    {
-      status: 200,
-    },
-  );
+  return HttpResponse.json(data, {
+    status: 200,
+  });
 });

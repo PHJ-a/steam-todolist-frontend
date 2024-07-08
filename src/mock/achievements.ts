@@ -244,12 +244,12 @@ const data3 = {
 
 export const achievements = [
   http.get('http://localhost:9999/achievements/289070', () => {
-    return HttpResponse.json({ data: data1 }, { status: 200 });
+    return HttpResponse.json(data1, { status: 200 });
   }),
   http.get('http://localhost:9999/achievements/440', () => {
-    return HttpResponse.json({ data: data2 }, { status: 200 });
+    return HttpResponse.json(data2, { status: 200 });
   }),
   http.get('http://localhost:9999/achievements/570', () => {
-    return HttpResponse.json({ data: data3 }, { status: 200 });
+    return HttpResponse.json(data3, { status: 200 });
   }),
 ];
