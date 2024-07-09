@@ -4,7 +4,14 @@ import useCompletedTodos from '../hooks/useCompletedTodo';
 import useModal from '../hooks/useModal';
 import { ModalData } from '../models/type';
 import TodoModal from '../components/modal/TodoModal';
-import { FaSearch } from 'react-icons/fa';
+import {
+  FaClock,
+  FaEye,
+  FaGamepad,
+  FaSearch,
+  FaSort,
+  FaTrophy,
+} from 'react-icons/fa';
 
 const itemsPerPage = 8; // 페이지 당 항목 수
 
@@ -52,7 +59,7 @@ const AchievementTable = () => {
   };
   return (
     <Wrapper>
-      <h2>도전과제 목록</h2>
+      <h2>완료한 도전과제 목록</h2>
       <div className='searchContainer'>
         <input
           type='text'
@@ -69,10 +76,18 @@ const AchievementTable = () => {
       <Table>
         <TableHeader>
           <tr>
-            <TableHeaderCell>도전과제 이름</TableHeaderCell>
-            <TableHeaderCell>게임명</TableHeaderCell>
-            <TableHeaderCell>시작 시간</TableHeaderCell>
+            <TableHeaderCell>
+              <FaTrophy style={{ marginRight: '5px' }} /> 도전과제 이름
+            </TableHeaderCell>
+            <TableHeaderCell>
+              <FaGamepad style={{ marginRight: '5px' }} /> 게임명
+            </TableHeaderCell>
+            <TableHeaderCell>
+              <FaClock style={{ marginRight: '5px' }} /> 시작 시간
+            </TableHeaderCell>
             <TableHeaderCell>걸린 시간</TableHeaderCell>
+            <TableHeaderCell>상태</TableHeaderCell>
+            <TableHeaderCell>액션</TableHeaderCell>
           </tr>
         </TableHeader>
         <tbody>
@@ -85,6 +100,14 @@ const AchievementTable = () => {
                 {(todo.end!.getTime() - todo.start.getTime()) /
                   (1000 * 60 * 60) +
                   '시간'}
+              </TableCell>
+              <TableCell>
+                <StatusBadge>completed</StatusBadge>
+              </TableCell>
+              <TableCell>
+                <ActionButton>
+                  <FaEye /> 상세
+                </ActionButton>
               </TableCell>
             </TableRow>
           ))}
@@ -196,14 +219,26 @@ const TableCell = styled.td`
   padding: 14px;
   border-bottom: 1px solid #445566;
 `;
-
+const StatusBadge = styled.span`
+  padding: 15px 10px;
+  border-radius: 15px;
+  font-size: 0.8em;
+  background-color: #27ae60;
+`;
 const Pagination = styled.div`
   margin-top: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
+const ActionButton = styled.button`
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #ecf0f1;
+  cursor: pointer;
+`;
 const PaginationButton = styled.button`
   margin: 0 8px;
   padding: 10px 18px;
