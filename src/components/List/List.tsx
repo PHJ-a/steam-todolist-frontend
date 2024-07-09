@@ -17,7 +17,7 @@ const AchievementList = ({ todos }: AchievementListProps) => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const navigateToCreate = () => {
-    navigate('/create');
+    navigate('/create/games');
   };
 
   return (
