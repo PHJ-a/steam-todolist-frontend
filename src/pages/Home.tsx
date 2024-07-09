@@ -224,7 +224,7 @@ const CalendarContainer = styled.div`
 
   // 현재 날짜 배경
   .rbc-today {
-    background-color: #4caf50;
+    background-color: #66c0f4;
     color: #ffffff;
   }
 
