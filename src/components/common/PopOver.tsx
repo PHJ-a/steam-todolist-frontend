@@ -18,6 +18,7 @@ const PopOver = ({ close }: PopOverProps) => {
     try {
       await axiosInstance.get('/logout');
       setIsLoggedIn(false);
+      navigate('/');
     } catch (error) {
       if (axios.isAxiosError<{ message: string }>(error)) {
         console.log(error);
