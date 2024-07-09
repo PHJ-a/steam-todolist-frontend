@@ -47,16 +47,18 @@ const ListItem = ({ todo, isLoggedIn }: ListItemProps) => {
 type AchievementItemProps = {
   isLoggedIn: boolean;
 };
+
 const AchievementItem = styled.div<AchievementItemProps>`
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #66c0f4;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: #2a475e;
+  color: #c7d5e0;
   ${(props) =>
     !props.isLoggedIn &&
     `
     filter: blur(2px);
-    pointer-events: none; /* 클릭 이벤트 무시 */
+    pointer-events: none;
   `}
 
   .header {
@@ -69,6 +71,7 @@ const AchievementItem = styled.div<AchievementItemProps>`
 const GameName = styled.div`
   font-size: 18px;
   font-weight: bold;
+  color: #66c0f4;
 `;
 
 const AchievementTitle = styled.div`
@@ -79,13 +82,12 @@ const AchievementTitle = styled.div`
 const TimeInfo = styled.div`
   font-size: 14px;
   margin-top: 5px;
-  color: #555;
 `;
 
 const Status = styled.div<{ isCompleted: Date | null }>`
   margin-top: 10px;
   font-size: 14px;
-  color: ${(props) => (props.isCompleted ? 'green' : 'red')};
+  color: ${(props) => (props.isCompleted ? '#a1cd44' : '#ff8c00')};
   font-weight: bold;
 `;
 
