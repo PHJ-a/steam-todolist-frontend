@@ -1,24 +1,25 @@
 export interface Todo {
-  id: number;
+  todoId: number;
   start: Date;
   end: Date | null;
   isFinished: boolean;
-  userId: number;
-  achievementId: number;
-  achievementTitle: string;
+  achieveId: number;
+  achieveName: string;
   gameId: number;
   gameName: string;
 } //내가 만든 투투 데이터
 
 export interface ModalData {
-  id: number;
-  gameName: string;
-  gameId: number;
-  achieveName: string;
-  achieveDescription: string;
-  achieveIcon: string;
+  todoId: number;
   start: Date;
   end: Date | null;
-  completedRate: number;
+  isFinished: boolean;
   achieveId: number;
+  achieveName: string;
+  gameId: number;
+  gameName: string;
+  achieveTag: string;
+  achieveDescription: string;
+  achieveIcon: string;
+  completedRate: string;
 } //모달에 사용되는 데이터

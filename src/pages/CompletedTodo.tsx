@@ -4,14 +4,7 @@ import useCompletedTodos from '../hooks/useCompletedTodo';
 import useModal from '../hooks/useModal';
 import { ModalData } from '../models/type';
 import TodoModal from '../components/modal/TodoModal';
-import {
-  FaClock,
-  FaEye,
-  FaGamepad,
-  FaSearch,
-  FaSort,
-  FaTrophy,
-} from 'react-icons/fa';
+import { FaClock, FaEye, FaGamepad, FaSearch, FaTrophy } from 'react-icons/fa';
 
 const itemsPerPage = 8; // 페이지 당 항목 수
 
@@ -34,16 +27,18 @@ const AchievementTable = () => {
   };
   const hanldeModal = async (id: number) => {
     const data2: ModalData = {
-      id: 1,
+      todoId: 1,
       gameName: `엘든링`,
       gameId: 123,
       achieveName: '엘든링 도전과제',
       achieveDescription: '엘든링 도전과제 설명',
       start: new Date('2024-06-22T00:00:00'),
       end: new Date('2024-06-22T12:00:00'),
-      completedRate: 85,
+      completedRate: '85',
       achieveId: 1,
       achieveIcon: '',
+      isFinished: false,
+      achieveTag: '',
     };
     // const data = await getModalData(id);
     setmodalData(data2);
@@ -52,7 +47,7 @@ const AchievementTable = () => {
 
   const handleSearch = () => {
     const filtered = todos.filter((todo) =>
-      todo.achievementTitle.toLowerCase().includes(search.toLowerCase()),
+      todo.achieveName.toLowerCase().includes(search.toLowerCase()),
     );
     setFilteredTodos(filtered);
     setCurrentPage(1);
@@ -92,8 +87,8 @@ const AchievementTable = () => {
         </TableHeader>
         <tbody>
           {currentItems.map((todo) => (
-            <TableRow key={todo.id} onClick={() => hanldeModal(todo.id)}>
-              <TableCell>{todo.achievementTitle}</TableCell>
+            <TableRow key={todo.todoId} onClick={() => hanldeModal(todo.id)}>
+              <TableCell>{todo.achieveName}</TableCell>
               <TableCell>{todo.gameName}</TableCell>
               <TableCell>{todo.start.toLocaleString()}</TableCell>
               <TableCell>
