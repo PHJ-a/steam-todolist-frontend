@@ -18,48 +18,74 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <Link to='/'>
-        <img src={logo} alt='logo' className='logo' />
-      </Link>
-
+      <LogoContainer>
+        <Link to='/'>
+          <h1>
+            <img src={logo} alt='logo' className='logo' />
+            Steam Todo
+          </h1>
+        </Link>
+      </LogoContainer>
       {isLoggedIn ? (
         <UserProfile />
       ) : (
-        <LoginButton onClick={handleLogin}>{'스팀 로그인'}</LoginButton>
+        <LoginButton onClick={handleLogin}>{'steam 로그인'}</LoginButton>
       )}
     </HeaderContainer>
   );
 };
 
 const HeaderContainer = styled.header`
-  max-width: 1800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px 26px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #282c34;
-  color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #171d25;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   margin-bottom: 20px;
+`;
+
+const LogoContainer = styled.div`
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  h1 {
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 
   .logo {
     height: 50px;
+    margin-right: 10px;
   }
 `;
 
 const LoginButton = styled.button`
-  background-color: #61dafb;
+  background-color: rgba(103, 112, 123, 0.2);
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 10px 20px;
-  color: white;
+  color: #c7d5e0;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
 
   &:hover {
-    background-color: #21a1f1;
+    background-color: rgb(61, 68, 80);
+    color: white;
   }
 `;
 
