@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axios';
 import { Achievement, Game } from '../pages/CreateTodo';
+import axios from 'axios';
 
 const useAchievements = (game: Game | null) => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -13,9 +14,11 @@ const useAchievements = (game: Game | null) => {
       try {
         const response = await axiosInstance.get(`/achievement/${game.appid}`);
         setAchievements(response.data.achievements);
-      } catch (err) {
-        setAchievements([]);
-        console.error(err);
+      } catch (error) {
+        if (axios.isAxiosError<{ message: string }>(error)) {
+          setAchievements([]);
+          console.log(error);
+        }
       }
       setSelectedAchievement(null);
     };
