@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 type ModalProps = {
   open: boolean;
@@ -59,6 +59,16 @@ Modal.Header = ModalHeader;
 Modal.Content = ModalContent;
 Modal.Footer = ModalFooter;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 const StyleModal = styled.div`
   position: fixed;
   top: 0;
@@ -82,6 +92,7 @@ const StyleModal = styled.div`
     border-radius: 6px;
     background-color: white;
     position: absolute;
+    animation: ${fadeIn} 0.3s ease-out;
   }
 `;
 
