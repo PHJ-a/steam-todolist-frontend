@@ -90,14 +90,18 @@ const MyCalendar = () => {
             endAccessor='end'
             eventPropGetter={eventStyleGetter}
             onSelectEvent={handleSelectEvent}
+            views={['month']}
+            formats={{
+              monthHeaderFormat: (date: Date) =>
+                `${date.getFullYear()}년 ${date.getMonth() + 1}월`,
+
+              weekdayFormat: (date: Date) =>
+                ['일', '월', '화', '수', '목', '금', '토'][date.getDay()],
+            }}
             messages={{
               previous: '이전',
               next: '다음',
               today: '오늘',
-              month: '월',
-              week: '주',
-              day: '일',
-              agenda: '일정',
             }}
           />
         ) : (
@@ -139,8 +143,44 @@ const CalendarContainer = styled.div`
     border-bottom: 1px solid #2a475e;
     border-radius: 10px 10px 0 0;
     padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  .rbc-toolbar-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
   }
 
+  .rbc-btn-group {
+    button {
+      background-color: transparent;
+      border: 1px solid #c7d5e0;
+      color: #c7d5e0;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+      }
+
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+  }
   .rbc-month-view,
   .rbc-time-view,
   .rbc-agenda-view {
