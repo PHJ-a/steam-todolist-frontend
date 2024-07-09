@@ -14,17 +14,16 @@ const useAchievements = (game: Game | null) => {
       try {
         const response = await axiosInstance.get(`/achievement/${game.appid}`);
         setAchievements(response.data.achievements);
-      } catch (error) {
-        if (axios.isAxiosError<{ message: string }>(error)) {
-          setAchievements([]);
-          console.log(error);
-        }
+      } catch (err) {
+        console.error(err);
       }
-      setSelectedAchievement(null);
     };
 
     fetchAchievements();
   }, [game]);
+
+  // 도전과제가 달성된 순서대로 정렬
+  achievements.sort((a, b) => b.achieved - a.achieved);
 
   return {
     achievements,

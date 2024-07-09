@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axios';
-import { Game } from '../pages/CreateTodo';
-import axios from 'axios';
+import { Game } from '../pages/CreateTodo/CreateTodo';
 
 const useGames = () => {
   const [games, setGames] = useState<Game[]>([]);
