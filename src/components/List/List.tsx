@@ -32,7 +32,7 @@ const AchievementList = ({ todos }: AchievementListProps) => {
       ))}
       {isLoggedIn && (
         <CreateButton
-          onClick={todos.length === 3 ? navigateToCreate : openModal}>
+          onClick={todos.length !== 3 ? navigateToCreate : openModal}>
           도전과제 생성 &nbsp;{todos.length}/3
         </CreateButton>
       )}
