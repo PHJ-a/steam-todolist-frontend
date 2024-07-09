@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axiosInstance from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 type PopOverProps = {
   close: () => void;
@@ -18,7 +19,9 @@ const PopOver = ({ close }: PopOverProps) => {
       await axiosInstance.get('/logout');
       setIsLoggedIn(false);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError<{ message: string }>(error)) {
+        console.log(error);
+      }
     }
   };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Todo } from '../models/type';
 import axiosInstance from '../api/axios';
+import axios from 'axios';
 
 const useCompletedTodos = () => {
   const [todos, setTodos] = useState<Todo[]>([
@@ -127,7 +128,9 @@ const useCompletedTodos = () => {
         const todos = res.data;
         console.log(todos);
       } catch (error) {
-        console.error('투두 페치 에러:', error);
+        if (axios.isAxiosError<{ message: string }>(error)) {
+          console.log(error);
+        }
       }
     };
 

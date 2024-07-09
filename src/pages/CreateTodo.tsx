@@ -6,6 +6,7 @@ import useAchievements from '../hooks/useAchievements';
 import axiosInstance from '../api/axios';
 import useTodos from '../hooks/useTodos';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export interface Game {
   appid: number;
@@ -36,9 +37,11 @@ const CreateTodo = () => {
         });
         // 성공시 home으로 이동
         navigate('/');
-      } catch (error: any) {
+      } catch (error) {
         // TODO: 이미 생성된 todo인 경우 에러 처리 추가 예정
-        console.error('Error creating todo:', error);
+        if (axios.isAxiosError<{ message: string }>(error)) {
+          console.error(error);
+        }
       }
     }
   };
