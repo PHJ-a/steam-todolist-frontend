@@ -2,8 +2,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { GlobalStyle } from './style/global';
 import Layout from './layout/Layout';
 import Home from './pages/Home';
-import CreateTodo from './pages/CreateTodo';
 import CompletedTodo from './pages/CompletedTodo';
+import Games from './pages/CreateTodo/Games';
+import Achievements from './pages/CreateTodo/Achievements';
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
         <Routes>
           <Route element={<Layout />}>
             <Route index path='/' element={<Home />} />
-            <Route path='/create' element={<CreateTodo />} />
+            <Route path='/create/games' element={<Games />} />
+            <Route path='/create/achievements' element={<Achievements />} />
             <Route path='/completed' element={<CompletedTodo />} />
           </Route>
         </Routes>
