@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import AchievementsList from '../../components/Achievements/AchievementsList';
 import { motion } from 'framer-motion';
 import axiosInstance from '../../api/axios';
+import axios from 'axios';
 
 function Achievements() {
   const location = useLocation();
@@ -19,8 +20,9 @@ function Achievements() {
           id: selectedAchievement.id,
         });
       } catch (error: any) {
-        // TODO: 이미 생성된 todo인 경우 에러 처리 추가 예정
-        console.error('Error creating todo:', error);
+        if (axios.isAxiosError<{ message: string }>(error)) {
+          console.log(error);
+        }
       }
     }
   };

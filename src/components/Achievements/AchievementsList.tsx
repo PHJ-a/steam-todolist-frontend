@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Achievement } from '../../pages/CreateTodo/CreateTodo';
 import AchievementItem from './AchievementItem';
 import { motion } from 'framer-motion';
+import { Achievement } from '../../hooks/useAchievements';
 
 type AchievementsListProps = {
   achievements: Achievement[];

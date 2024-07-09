@@ -1,16 +1,15 @@
 import styled from 'styled-components';
-import { Game } from '../../pages/CreateTodo/CreateTodo';
+
 import GameItem from './GameItem';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
+import { Game } from '../../hooks/useGames';
 
 export type GameListProps = {
   games: Game[];
-  onSelectGame: React.Dispatch<React.SetStateAction<Game | null>>;
-  selectedGame: number | undefined;
 };
 
-const GameList = ({ games, onSelectGame, selectedGame }: GameListProps) => {
+const GameList = ({ games }: GameListProps) => {
   const [index, setIndex] = useState<number>(0);
   const [search, setSearch] = useState<string>('');
   const [offset, setOffset] = useState<number>(9);
@@ -74,12 +73,7 @@ const GameList = ({ games, onSelectGame, selectedGame }: GameListProps) => {
           {filteredGames
             .slice(index * offset, index * offset + offset)
             .map((game) => (
-              <GameItem
-                key={game.appid}
-                game={game}
-                // onSelectGame={onSelectGame}
-                // selectedGame={selectedGame}
-              />
+              <GameItem key={game.appid} game={game} />
             ))}
         </Column>
       </Slider>

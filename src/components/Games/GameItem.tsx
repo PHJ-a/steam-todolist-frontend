@@ -1,12 +1,11 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { Game } from '../../pages/CreateTodo/CreateTodo';
+
 import { useNavigate } from 'react-router-dom';
+import { Game } from '../../hooks/useGames';
 
 type GameItemProps = {
   game: Game;
-  setGame?: React.Dispatch<React.SetStateAction<Game | null>>;
-  isSelected?: boolean;
 };
 
 const gameVariants = {
@@ -28,7 +27,7 @@ const gameVariants = {
   },
 };
 
-const GameItem = ({ game, setGame, isSelected }: GameItemProps) => {
+const GameItem = ({ game }: GameItemProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {

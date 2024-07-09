@@ -4,18 +4,14 @@ import useGames from '../../hooks/useGames';
 import { motion } from 'framer-motion';
 
 function Games() {
-  const { games, selectedGame, setSelectedGame } = useGames();
+  const { games } = useGames();
   return (
     <GamesStyle
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}>
       <h2>게임을 선택해 주세요.</h2>
-      <GameList
-        onSelectGame={setSelectedGame}
-        games={games}
-        selectedGame={selectedGame?.appid}
-      />
+      <GameList games={games} />
     </GamesStyle>
   );
 }
