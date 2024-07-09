@@ -44,39 +44,39 @@ const StyledModalContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 40px;
   text-align: center;
   color: #333;
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
 const Icon = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   margin-bottom: 20px;
 `;
 
 const Title = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   margin: 0 0 10px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const Message = styled.p`
   margin: 0 0 20px;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 1.2rem;
+  line-height: 1.6;
   color: #555;
 `;
 
 const StyledCloseButton = styled.button`
-  padding: 10px 20px;
-  background-color: #255e94;
+  padding: 12px 24px;
+  background-color: #155d91;
   border: none;
   border-radius: 5px;
   color: white;
-  font-size: 1rem;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin: 10px;
+  margin: 20px;
 `;
