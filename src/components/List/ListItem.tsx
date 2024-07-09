@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import icon from '../../assets/SnackBarIcon.png';
 import useSnackBar from '../../hooks/useSnackBar';
 import { Todo } from '../../models/type';
+import useTodos from '../../hooks/useTodos';
+import axios from 'axios';
 
 type ListItemProps = {
   todo: Todo;
@@ -9,6 +11,7 @@ type ListItemProps = {
 };
 
 const ListItem = ({ todo, isLoggedIn }: ListItemProps) => {
+  const { removeTodo } = useTodos();
   const { snackbar, open } = useSnackBar(
     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
       <img src={icon} width={50} height={50} />
@@ -16,15 +19,22 @@ const ListItem = ({ todo, isLoggedIn }: ListItemProps) => {
     </div>,
   );
 
-  const handleRemove = () => {
-    open();
+  const handleRemove = async (id: number) => {
+    try {
+      await removeTodo(id);
+      open();
+    } catch (error) {
+      if (axios.isAxiosError<{ message: string }>(error)) {
+        console.error(error);
+      }
+    }
   };
 
   return (
     <AchievementItem isLoggedIn={isLoggedIn}>
       <div className='header'>
         <GameName>{todo.gameName}</GameName>
-        <div className='exit' onClick={handleRemove}>
+        <div className='exit' onClick={() => handleRemove(todo.todoId)}>
           X
         </div>
       </div>
