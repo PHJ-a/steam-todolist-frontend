@@ -59,6 +59,7 @@ const useTodos = () => {
       if (axios.isAxiosError<{ message: string }>(error)) {
         console.log(error);
       }
+      throw error;
     }
   };
   return { todos, removeTodo };

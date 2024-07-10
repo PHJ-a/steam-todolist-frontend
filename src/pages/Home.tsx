@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer, Event } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/ko';
@@ -12,6 +12,8 @@ import { useAuth } from '../context/AuthContext';
 import Empty from '../components/Empty';
 import useTodos from '../hooks/useTodos';
 import { motion } from 'framer-motion'; // Import motion from Framer Motion
+import Swal from 'sweetalert2';
+import nyanCat from '../assets/nyan-cat-nyan.gif';
 
 moment.locale('ko-KR');
 
@@ -22,9 +24,38 @@ type CustomEvent = Event & {
 };
 
 const MyCalendar = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
   const { todos } = useTodos();
+
+  useEffect(() => {
+    if (!isLoading && !isLoggedIn) {
+      Swal.fire({
+        allowOutsideClick: false,
+        title: '로그인이 필요합니다.',
+        text: '저희 서비스는 로그인을 하셔야만 사용가능합니다.',
+        width: 600,
+        padding: '3em',
+        color: '#716add',
+        background: '#fff  url("../assets/nyan-cat.gif")',
+        backdrop: `
+          rgba(0,0,123,0.4)
+          url(${nyanCat})
+          left top / 500px 300px
+          no-repeat
+        `,
+
+        showConfirmButton: true,
+        confirmButtonText: '로그인하러 가기',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
+            'http://localhost:5173',
+          )}`;
+        }
+      });
+    }
+  }, [isLoggedIn, isLoading]);
 
   const [eventData, setEventData] = useState<ModalData | null>(null);
 
@@ -83,7 +114,7 @@ const MyCalendar = () => {
       // opcity 속도 조절
       transition={{ duration: 1.2 }}>
       <CalendarContainer>
-        {isLoggedIn ? (
+        {
           <Calendar
             className='my-calendar'
             localizer={localizer}
@@ -106,15 +137,17 @@ const MyCalendar = () => {
               today: '오늘',
             }}
           />
-        ) : (
+        }
+
+        {/* 
           <Empty
-            onLoginClick={() =>
-              (window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
-                'http://localhost:5173',
-              )}`)
-            }
-          />
-        )}
+          //   onLoginClick={() =>
+          //     (window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
+          //       'http://localhost:5173',
+          //     )}`)
+          //   }
+          // /> */}
+
         <AchievementListContainer>
           <AchievementList todos={todos} />
         </AchievementListContainer>
