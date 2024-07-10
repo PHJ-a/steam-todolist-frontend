@@ -17,6 +17,7 @@ const useAchievements = (game: Game | null) => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [selectedAchievement, setSelectedAchievement] =
     useState<Achievement | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -28,6 +29,8 @@ const useAchievements = (game: Game | null) => {
         if (axios.isAxiosError<{ message: string }>(error)) {
           console.log(error);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -41,6 +44,7 @@ const useAchievements = (game: Game | null) => {
     achievements,
     selectedAchievement,
     setSelectedAchievement,
+    isLoading,
   };
 };
 
