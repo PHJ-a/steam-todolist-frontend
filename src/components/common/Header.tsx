@@ -26,11 +26,8 @@ const Header = () => {
           </h1>
         </Link>
       </LogoContainer>
-      {isLoggedIn ? (
-        <UserProfile />
-      ) : (
-        <LoginButton onClick={handleLogin}>{'steam 로그인'}</LoginButton>
-      )}
+      (
+      <UserProfile />)
     </HeaderContainer>
   );
 };
