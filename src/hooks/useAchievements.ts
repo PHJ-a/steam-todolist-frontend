@@ -23,7 +23,6 @@ const useAchievements = (game: Game | null) => {
       if (!game) return;
       try {
         const response = await axiosInstance.get(`/achievement/${game.appid}`);
-        console.log(response.data.achievements);
         setAchievements(response.data.achievements);
       } catch (error) {
         if (axios.isAxiosError<{ message: string }>(error)) {

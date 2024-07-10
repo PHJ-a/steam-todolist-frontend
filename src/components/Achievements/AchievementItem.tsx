@@ -30,6 +30,7 @@ function AchievementItem({
       <div className='info'>
         <h3>{achievement.displayName}</h3>
         <p className='description'>{achievement.description}</p>
+        {/* TODO: 달성률을 bar로 표현하기 */}
         <p className='completedRate'>
           전체 플레이어 달성률: {achievement.completedRate}%
         </p>
