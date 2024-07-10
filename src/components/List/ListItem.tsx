@@ -29,7 +29,7 @@ const ListItem = ({ todo, isLoggedIn }: ListItemProps) => {
         </div>
       </div>
 
-      <AchievementTitle>{todo.achievementTitle}</AchievementTitle>
+      <AchievementTitle>{todo.achieveName}</AchievementTitle>
       <TimeInfo>
         시작시간: {todo.start.toLocaleString()}
         <br />

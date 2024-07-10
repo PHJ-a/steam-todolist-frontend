@@ -8,26 +8,24 @@ const useTodos = () => {
   const { isLoggedIn } = useAuth();
   const [todos, setTodos] = useState<Todo[]>([
     {
-      id: 1,
-      achievementTitle: '엘든링 도전과제 1',
-      achievementId: 101,
+      todoId: 1,
+      achieveName: '엘든링 도전과제 1',
+      achieveId: 101,
       gameId: 201,
       gameName: '엘든링',
       start: new Date('2024-06-22T00:00:00'),
       end: null,
       isFinished: false,
-      userId: 1,
     },
     {
-      id: 2,
-      achievementTitle: '나의 도전과제 2',
-      achievementId: 102,
+      todoId: 2,
+      achieveName: '나의 도전과제 2',
+      achieveId: 102,
       gameId: 202,
       gameName: '엘든링',
       start: new Date('2024-06-28T00:00:00'),
       end: null,
       isFinished: false,
-      userId: 2,
     },
   ]);
 

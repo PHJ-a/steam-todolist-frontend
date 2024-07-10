@@ -11,6 +11,7 @@ type TodoModalProps = {
 };
 
 const TodoModal = ({ open, close, data }: TodoModalProps) => {
+  if (!data) return;
   return (
     <Modal open={open} onClickOutside close={close}>
       <Modal.Header title='도전과제 현황' close={close} />
@@ -29,7 +30,7 @@ const TodoModal = ({ open, close, data }: TodoModalProps) => {
         <ProgressContainer>
           <p>달성률 {data?.completedRate}%</p>
           <ProgressBar>
-            <ProgressFill progress={data?.completedRate || 0} />
+            <ProgressFill progress={parseInt(data?.completedRate) || 0} />
           </ProgressBar>
         </ProgressContainer>
         {data?.end ? (

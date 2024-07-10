@@ -31,8 +31,8 @@ const MyCalendar = () => {
   const colors = ['#FF6347', '#4682B4', '#6A5ACD', '#FFD700', '#6A5ACD'];
 
   const colorsTodo: CustomEvent[] = todos.map((todo, index) => ({
-    id: todo.id,
-    title: todo.achievementTitle,
+    id: todo.todoId,
+    title: todo.achieveName,
     start: todo.start,
     end: todo.end || new Date(),
     resource: { color: colors[index % colors.length] },
@@ -53,16 +53,18 @@ const MyCalendar = () => {
 
   const handleSelectEvent = async (event: CustomEvent) => {
     const data2: ModalData = {
-      id: 1,
+      todoId: 1,
       gameName: `엘든링`,
       gameId: 123,
       achieveName: '엘든링 도전과제',
       achieveDescription: '엘든링 도전과제 설명',
       start: event.start!,
       end: event.end!,
-      completedRate: 85,
+      completedRate: '85',
       achieveId: 1,
       achieveIcon: '',
+      achieveTag: '',
+      isFinished: false,
     };
     // const data = await getModalData(event.id);
     setEventData(data2); //data || data2
