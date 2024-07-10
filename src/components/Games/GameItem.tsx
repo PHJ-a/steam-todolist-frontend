@@ -56,11 +56,6 @@ const GameItem = ({ game }: GameItemProps) => {
           <span className='label'>최근 플레이</span>
           2020년 5월 1일
         </span>
-        <div className='achievements'>
-          <span className='label'>도전과제</span>
-          <span className='fraction'>3/80</span>
-          <div className='bar'></div>
-        </div>
       </div>
     </GameItemStyle>
   );
@@ -79,7 +74,6 @@ const GameItemStyle = styled(motion.div)`
     'img playtime playtime'
     'img achievements achievements';
   grid-template-columns: 210px min-content auto;
-
   max-height: 170px;
 
   .img {
@@ -144,17 +138,6 @@ const GameItemStyle = styled(motion.div)`
       .fraction {
         grid-area: fraction;
         text-align: end;
-      }
-
-      .bar {
-        grid-area: bar;
-        --color-progress-bar-background: #3c3f49;
-        --color-progress-bar-foreground: #1a9fff;
-        width: 100%;
-        height: 6px;
-        background-color: var(--color-progress-bar-background);
-        border-radius: 2px;
-        overflow: hidden;
       }
     }
   }
