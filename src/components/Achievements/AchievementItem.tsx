@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import { motion } from 'framer-motion';
 import { Achievement } from '../../hooks/useAchievements';
 
@@ -22,7 +21,6 @@ function AchievementItem({
 
   return (
     <AchievementItemStyle
-      className={achievement.achieved === 1 ? 'achieved' : ''}
       isSelected={isSelected?.id === achievement.id}
       achieved={achievement.achieved}
       onClick={handleClick}>
@@ -31,8 +29,16 @@ function AchievementItem({
       </div>
       <div className='info'>
         <h3>{achievement.displayName}</h3>
-        <p>{achievement.description}</p>
-        <p>전체 플레이어 달성률: {achievement.completedRate}%</p>
+        <p className='description'>{achievement.description}</p>
+        {/* TODO: 달성률을 bar로 표현하기 */}
+        <p className='completedRate'>
+          전체 플레이어 달성률: {achievement.completedRate}%
+        </p>
+      </div>
+      <div className={achievement.achieved === 1 ? 'achieved' : ''}>
+        {achievement.achieved === 1 ? (
+          <p>2022년 3월 26일 오후 11시 38분에 획득</p>
+        ) : null}
       </div>
     </AchievementItemStyle>
   );
@@ -53,11 +59,20 @@ const AchievementItemStyle = styled(motion.div)<{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: background 0.3s ease, transform 0.3s ease;
   gap: 10px;
-  height: 64px;
+  height: 80px;
   cursor: pointer;
+  overflow: hidden; /* Ensure content doesn't overflow */
+  position: relative;
+  padding: 10px;
 
-  .achieved {
-    width: 100px;
+  h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #fff;
+  }
+  p {
+    font-size: 0.8rem;
+    color: #ccc;
   }
 
   &:hover {
@@ -67,6 +82,7 @@ const AchievementItemStyle = styled(motion.div)<{
   .img {
     width: 64px;
     height: 64px;
+    background: rgba(0, 0, 0, 0.5);
 
     img {
       width: 100%;
@@ -75,15 +91,30 @@ const AchievementItemStyle = styled(motion.div)<{
   }
 
   .info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
     flex: 1;
-    h3 {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #fff;
-    }
+    overflow: hidden; /* Ensure text doesn't overflow */
+  }
+
+  .description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+
+  .completedRate {
+    font-size: 0.71rem;
+  }
+
+  .achieved {
     p {
-      font-size: 0.8rem;
-      color: #ccc;
+      font-size: 0.71rem;
+      color: #fff;
     }
   }
 `;
