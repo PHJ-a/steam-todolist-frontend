@@ -27,6 +27,18 @@ function Achievements() {
     }
   };
 
+  // 도전과제 완료율 계산
+  const totalAchievements = achievements.length;
+  // 도전과제 중 achieved가 1인 것만 필터링
+  const completedAchievements = achievements.filter(
+    (achievement) => achievement.achieved === 1,
+  ).length;
+  // 완료율 계산
+  const completionRate =
+    totalAchievements > 0
+      ? (completedAchievements / totalAchievements) * 100
+      : 0;
+
   return (
     <AchievementsStyle
       initial={{ opacity: 0, y: 20 }}
@@ -42,9 +54,14 @@ function Achievements() {
         </div>
         <h3>{game.name}</h3>
         <div>
-          <span>80 중 2 (3%) 개의 도전과제 완료</span>
+          <span>
+            {totalAchievements} 중 {completedAchievements} (
+            {completionRate.toFixed(1)}%) 개의 도전과제 완료
+          </span>
           <div className='bar'>
-            <div className='progress'></div>
+            <div
+              className='progress'
+              style={{ width: `${completionRate}%` }}></div>
           </div>
         </div>
       </div>
@@ -95,11 +112,11 @@ const AchievementsStyle = styled(motion.div)`
     .progress {
       background: #5f98d3;
       height: 8px;
-      width: 3%;
+      width: 0%; /* 초기 width 값 */
+      transition: width 0.5s ease-in-out;
     }
   }
   .button {
-    //가운데 정렬
     display: flex;
     justify-content: center;
     margin-top: 10px;
