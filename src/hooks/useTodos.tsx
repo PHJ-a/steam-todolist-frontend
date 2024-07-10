@@ -51,7 +51,17 @@ const useTodos = () => {
     }
   }, [isLoggedIn]);
 
-  return { todos };
+  const removeTodo = async (id: number) => {
+    try {
+      await axiosInstance.delete(`/todo/${id}`);
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.todoId !== id));
+    } catch (error) {
+      if (axios.isAxiosError<{ message: string }>(error)) {
+        console.log(error);
+      }
+    }
+  };
+  return { todos, removeTodo };
 };
 
 export default useTodos;
