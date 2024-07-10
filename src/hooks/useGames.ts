@@ -9,7 +9,7 @@ export interface Game {
 
 const useGames = () => {
   const [games, setGames] = useState<Game[]>([]);
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -20,13 +20,15 @@ const useGames = () => {
         if (axios.isAxiosError<{ message: string }>(error)) {
           console.log(error);
         }
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchGames();
   }, []);
 
-  return { games, selectedGame, setSelectedGame };
+  return { games, isLoading };
 };
 
 export default useGames;
