@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:9999';
+const BASE_URL = 'http://nestjs-sample.ap-northeast-2.elasticbeanstalk.com';
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,

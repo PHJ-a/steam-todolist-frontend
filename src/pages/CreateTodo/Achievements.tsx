@@ -19,7 +19,8 @@ function Achievements() {
         const response = await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-      } catch (error: any) {
+        console.log(response);
+      } catch (error) {
         if (axios.isAxiosError<{ message: string }>(error)) {
           console.log(error);
         }

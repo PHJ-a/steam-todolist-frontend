@@ -9,9 +9,8 @@ import TodoModal from '../components/modal/TodoModal';
 import { ModalData } from '../models/type';
 import AchievementList from '../components/List/List';
 import { useAuth } from '../context/AuthContext';
-import Empty from '../components/Empty';
 import useTodos from '../hooks/useTodos';
-import { motion } from 'framer-motion'; // Import motion from Framer Motion
+import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
 import nyanCat from '../assets/nyan-cat-nyan.gif';
 
@@ -49,9 +48,8 @@ const MyCalendar = () => {
         confirmButtonText: '로그인하러 가기',
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
-            'http://localhost:5173',
-          )}`;
+          window.location.href = `http://nestjs-sample.ap-northeast-2.elasticbeanstalk.com/login
+          `;
         }
       });
     }
@@ -97,8 +95,8 @@ const MyCalendar = () => {
       achieveTag: '',
       isFinished: false,
     };
-    // const data = await getModalData(event.id);
-    setEventData(data2); //data || data2
+    const data = await getModalData(event.id);
+    setEventData(data || data2); //data || data2
     openModal();
   };
 
@@ -138,15 +136,6 @@ const MyCalendar = () => {
             }}
           />
         }
-
-        {/* 
-          <Empty
-          //   onLoginClick={() =>
-          //     (window.location.href = `http://localhost:9999/login?returnTo=${encodeURIComponent(
-          //       'http://localhost:5173',
-          //     )}`)
-          //   }
-          // /> */}
 
         <AchievementListContainer>
           <AchievementList todos={todos} />
