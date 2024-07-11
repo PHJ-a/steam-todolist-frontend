@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AchievementsList from '../../components/Achievements/AchievementsList';
 import { motion } from 'framer-motion';
 import axiosInstance from '../../api/axios';
-import axios, { HttpStatusCode } from 'axios';
+import axios from 'axios';
 import Loading from '../../components/common/Loading';
 
 function Achievements() {
