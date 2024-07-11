@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import useAchievements from '../../hooks/useAchievements';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AchievementsList from '../../components/Achievements/AchievementsList';
 import { motion } from 'framer-motion';
 import axiosInstance from '../../api/axios';
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import Loading from '../../components/common/Loading';
 
 function Achievements() {
   const location = useLocation();
   const game = location.state;
-
+  const navigate = useNavigate();
   const {
     achievements,
     setSelectedAchievement,
@@ -18,15 +18,24 @@ function Achievements() {
     isLoading,
   } = useAchievements(game);
 
+  // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
-    if (selectedAchievement !== null) {
+    if (selectedAchievement) {
       try {
-        const response = await axiosInstance.post('/todo', {
+        await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-      } catch (error: any) {
-        if (axios.isAxiosError<{ message: string }>(error)) {
-          console.log(error);
+        alert('도전과제가 추가되었습니다.');
+        navigate('/');
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const { message, statusCode } = error.response.data;
+
+          if (statusCode === 400) {
+            alert(message);
+          }
+        } else {
+          alert('도전과제 추가 중 문제가 발생했습니다.');
         }
       }
     }
