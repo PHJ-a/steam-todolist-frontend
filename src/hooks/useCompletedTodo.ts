@@ -117,6 +117,7 @@ const useCompletedTodos = () => {
         });
         const todos = res.data;
         console.log(todos);
+        setTodos(todos);
       } catch (error) {
         if (axios.isAxiosError<{ message: string }>(error)) {
           console.log(error);

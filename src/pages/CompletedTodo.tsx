@@ -40,8 +40,8 @@ const AchievementTable = () => {
       isFinished: false,
       achieveTag: '',
     };
-    // const data = await getModalData(id);
-    setmodalData(data2);
+    const data = await getModalData(id);
+    setmodalData(data || data2);
     openModal();
   };
 
@@ -87,7 +87,9 @@ const AchievementTable = () => {
         </TableHeader>
         <tbody>
           {currentItems.map((todo) => (
-            <TableRow key={todo.todoId} onClick={() => hanldeModal(todo.id)}>
+            <TableRow
+              key={todo.todoId}
+              onClick={() => hanldeModal(todo.todoId)}>
               <TableCell>{todo.achieveName}</TableCell>
               <TableCell>{todo.gameName}</TableCell>
               <TableCell>{todo.start.toLocaleString()}</TableCell>

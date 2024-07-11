@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import logo from '../../assets/userProfile.gif';
 import { useState } from 'react';
 import PopOver from '../common/PopOver';
 import { CgProfile } from 'react-icons/cg';
