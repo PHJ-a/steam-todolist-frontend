@@ -15,7 +15,10 @@ function AchievementsList({
   isSelected,
 }: AchievementsListProps) {
   return (
-    <AchievementsListStyle>
+    <AchievementsListStyle
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}>
       <Row>
         {achievements.map((achievement) => (
           <AchievementItem
@@ -30,7 +33,7 @@ function AchievementsList({
   );
 }
 
-const AchievementsListStyle = styled.div`
+const AchievementsListStyle = styled(motion.div)`
   margin-top: 12px;
   display: flex;
   flex-direction: column;

@@ -1,28 +1,41 @@
 import styled from 'styled-components';
 import useAchievements from '../../hooks/useAchievements';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AchievementsList from '../../components/Achievements/AchievementsList';
 import { motion } from 'framer-motion';
 import axiosInstance from '../../api/axios';
 import axios from 'axios';
+import Loading from '../../components/common/Loading';
 
 function Achievements() {
   const location = useLocation();
   const game = location.state;
+  const navigate = useNavigate();
+  const {
+    achievements,
+    setSelectedAchievement,
+    selectedAchievement,
+    isLoading,
+  } = useAchievements(game);
 
-  const { achievements, setSelectedAchievement, selectedAchievement } =
-    useAchievements(game);
-
+  // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
-    if (selectedAchievement !== null) {
+    if (selectedAchievement) {
       try {
-        const response = await axiosInstance.post('/todo', {
+        await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-        console.log(response);
+        alert('도전과제가 추가되었습니다.');
+        navigate('/');
       } catch (error) {
-        if (axios.isAxiosError<{ message: string }>(error)) {
-          console.log(error);
+        if (axios.isAxiosError(error) && error.response) {
+          const { message, statusCode } = error.response.data;
+
+          if (statusCode === 400) {
+            alert(message);
+          }
+        } else {
+          alert('도전과제 추가 중 문제가 발생했습니다.');
         }
       }
     }
@@ -40,6 +53,27 @@ function Achievements() {
       ? (completedAchievements / totalAchievements) * 100
       : 0;
 
+  // 선택한 게임의 도전과제가 없을 때
+  if (achievements.length === 0 && !isLoading) {
+    return (
+      <AchievementsStyle
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}>
+        <div className='title'>
+          <h2>도전과제를 선택해 주세요.</h2>
+          <div className='game-img'>
+            <img
+              src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/header.jpg`}
+              alt={game.name}
+            />
+          </div>
+          <h3>{game.name}</h3>
+          <span className='empty'>해당 게임은 도전과제가 없습니다.</span>
+        </div>
+      </AchievementsStyle>
+    );
+  }
   return (
     <AchievementsStyle
       initial={{ opacity: 0, y: 20 }}
@@ -66,11 +100,17 @@ function Achievements() {
           </div>
         </div>
       </div>
-      <AchievementsList
-        achievements={achievements}
-        onSelect={setSelectedAchievement}
-        isSelected={selectedAchievement}
-      />
+      {isLoading ? (
+        <div className='loading'>
+          <Loading />
+        </div>
+      ) : (
+        <AchievementsList
+          achievements={achievements}
+          onSelect={setSelectedAchievement}
+          isSelected={selectedAchievement}
+        />
+      )}
       {selectedAchievement && (
         <div onClick={handleCreateTodo} className='button'>
           <button>선택한 도전과제 추가하기</button>
@@ -134,6 +174,15 @@ const AchievementsStyle = styled(motion.div)`
         background: #4a90e2;
       }
     }
+  }
+
+  .empty {
+    margin-top: 10px;
+    color: #ff0000; /* 메시지 색상 추가 */
+  }
+
+  .loading {
+    margin-top: 40px;
   }
 `;
 

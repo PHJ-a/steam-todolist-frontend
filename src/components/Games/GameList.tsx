@@ -63,7 +63,7 @@ const GameList = ({ games }: GameListProps) => {
         {Array.from({ length: pageCount }, (_, i) => (
           <Dot
             key={i}
-            isActive={i === index}
+            $isActive={i === index}
             onClick={() => handleDotClick(i)}
           />
         ))}
@@ -127,10 +127,10 @@ const Dots = styled.div`
   }
 `;
 
-const Dot = styled.div<{ isActive: boolean }>`
+const Dot = styled.div<{ $isActive: boolean }>`
   width: 70px;
   height: 5px;
-  background-color: ${(props) => (props.isActive ? '#007bff' : '#ccc')};
+  background-color: ${(props) => (props.$isActive ? '#007bff' : '#ccc')};
   margin: 0 5px;
   border-radius: 2px;
   cursor: pointer;
