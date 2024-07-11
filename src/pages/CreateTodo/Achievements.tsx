@@ -54,7 +54,8 @@ function Achievements() {
           axios.isAxiosError<{ message: string; statusCode: number }>(error) &&
           error.response
         ) {
-          const { message, statusCode } = error.response.data;
+          // const { message, statusCode } = error.response.data;
+          const { statusCode } = error.response.data;
 
           if (statusCode === 400) {
             open1();
