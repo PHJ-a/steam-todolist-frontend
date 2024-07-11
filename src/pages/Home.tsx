@@ -48,7 +48,7 @@ const MyCalendar = () => {
         confirmButtonText: '로그인하러 가기',
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href = `http://nestjs-sample.ap-northeast-2.elasticbeanstalk.com/login
+          window.location.href = `http://steam-todo-deploy-test-env.eba-fhqdybsp.ap-northeast-2.elasticbeanstalk.com/login
           `;
         }
       });
