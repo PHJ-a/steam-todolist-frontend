@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import AchievementsList from '../../components/Achievements/AchievementsList';
 import Loading from '../../components/common/Loading';
 import useSnackBar from '../../hooks/useSnackBar';
-import useAchievements, { Achievement } from '../../hooks/useAchievements';
+import useAchievements from '../../hooks/useAchievements';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axios';
 import axios from 'axios';

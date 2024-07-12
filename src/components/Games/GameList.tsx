@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import GameItem from './GameItem';
 import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
