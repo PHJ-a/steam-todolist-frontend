@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useCompletedTodos from '../hooks/useCompletedTodo';
 import useModal from '../hooks/useModal';
@@ -21,27 +21,30 @@ const AchievementTable = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredTodos.slice(indexOfFirstItem, indexOfLastItem);
 
+  useEffect(() => {
+    setFilteredTodos(todos);
+  }, [todos]);
   // 페이지 변경 핸들러
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
   const hanldeModal = async (id: number) => {
-    const data2: ModalData = {
-      todoId: 1,
-      gameName: `엘든링`,
-      gameId: 123,
-      achieveName: '엘든링 도전과제',
-      achieveDescription: '엘든링 도전과제 설명',
-      start: new Date('2024-06-22T00:00:00'),
-      end: new Date('2024-06-22T12:00:00'),
-      completedRate: '85',
-      achieveId: 1,
-      achieveIcon: '',
-      isFinished: false,
-      achieveTag: '',
-    };
+    // const data2: ModalData = {
+    //   todoId: 1,
+    //   gameName: `엘든링`,
+    //   gameId: 123,
+    //   achieveName: '엘든링 도전과제',
+    //   achieveDescription: '엘든링 도전과제 설명',
+    //   start: new Date('2024-06-22T00:00:00'),
+    //   end: new Date('2024-06-22T12:00:00'),
+    //   completedRate: '85',
+    //   achieveId: 1,
+    //   achieveIcon: '',
+    //   isFinished: false,
+    //   achieveTag: '',
+    // };
     const data = await getModalData(id);
-    setmodalData(data || data2);
+    setmodalData(data);
     openModal();
   };
 
@@ -86,28 +89,36 @@ const AchievementTable = () => {
           </tr>
         </TableHeader>
         <tbody>
-          {currentItems.map((todo) => (
-            <TableRow
-              key={todo.todoId}
-              onClick={() => hanldeModal(todo.todoId)}>
-              <TableCell>{todo.achieveName}</TableCell>
-              <TableCell>{todo.gameName}</TableCell>
-              <TableCell>{todo.start.toLocaleString()}</TableCell>
-              <TableCell>
-                {(todo.end!.getTime() - todo.start.getTime()) /
-                  (1000 * 60 * 60) +
-                  '시간'}
-              </TableCell>
-              <TableCell>
-                <StatusBadge>completed</StatusBadge>
-              </TableCell>
-              <TableCell>
-                <ActionButton>
-                  <FaEye /> 상세
-                </ActionButton>
+          {currentItems.length > 0 ? (
+            currentItems.map((todo) => (
+              <TableRow
+                key={todo.todoId}
+                onClick={() => hanldeModal(todo.todoId)}>
+                <TableCell>{todo.achieveName}</TableCell>
+                <TableCell>{todo.gameName}</TableCell>
+                <TableCell>{todo.start.toLocaleString()}</TableCell>
+                <TableCell>
+                  {(todo.end!.getTime() - todo.start.getTime()) /
+                    (1000 * 60 * 60) +
+                    '시간'}
+                </TableCell>
+                <TableCell>
+                  <StatusBadge>completed</StatusBadge>
+                </TableCell>
+                <TableCell>
+                  <ActionButton>
+                    <FaEye /> 상세
+                  </ActionButton>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={6} style={{ textAlign: 'center' }}>
+                완료된 도전과제가 없습니다.
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </tbody>
       </Table>
       <Pagination>

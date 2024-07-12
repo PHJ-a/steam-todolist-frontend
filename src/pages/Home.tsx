@@ -81,22 +81,22 @@ const MyCalendar = () => {
   };
 
   const handleSelectEvent = async (event: CustomEvent) => {
-    const data2: ModalData = {
-      todoId: 1,
-      gameName: `엘든링`,
-      gameId: 123,
-      achieveName: '엘든링 도전과제',
-      achieveDescription: '엘든링 도전과제 설명',
-      start: event.start!,
-      end: event.end!,
-      completedRate: '85',
-      achieveId: 1,
-      achieveIcon: '',
-      achieveTag: '',
-      isFinished: false,
-    };
+    // const data2: ModalData = {
+    //   todoId: 1,
+    //   gameName: `엘든링`,
+    //   gameId: 123,
+    //   achieveName: '엘든링 도전과제',
+    //   achieveDescription: '엘든링 도전과제 설명',
+    //   start: event.start!,
+    //   end: event.end!,
+    //   completedRate: '85',
+    //   achieveId: 1,
+    //   achieveIcon: '',
+    //   achieveTag: '',
+    //   isFinished: false,
+    // };
     const data = await getModalData(event.id);
-    setEventData(data || data2); //data || data2
+    setEventData(data); //data || data2
     openModal();
   };
 
