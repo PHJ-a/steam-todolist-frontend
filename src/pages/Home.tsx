@@ -13,6 +13,9 @@ import useTodos from '../hooks/useTodos';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
 import nyanCat from '../assets/nyan-cat-nyan.gif';
+import useSnackBar from '../hooks/useSnackBar';
+import icon from '../assets/SnackBarIcon.png';
+import axios from 'axios';
 
 moment.locale('ko-KR');
 
@@ -26,7 +29,24 @@ type CustomEvent = Event & {
 const MyCalendar = () => {
   const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
-  const { todos } = useTodos();
+  const { todos, removeTodo } = useTodos();
+  const { snackbar, open: openSnackbar } = useSnackBar(
+    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+      <img src={icon} width={50} height={50} />
+      <p>삭제가 완료되었습니다</p>
+    </div>,
+  );
+
+  const handleRemove = async (id: number) => {
+    try {
+      await removeTodo(id);
+      openSnackbar();
+    } catch (error) {
+      if (axios.isAxiosError<{ message: string }>(error)) {
+        console.error(error);
+      }
+    }
+  };
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
@@ -138,9 +158,10 @@ const MyCalendar = () => {
         }
 
         <AchievementListContainer>
-          <AchievementList todos={todos} />
+          <AchievementList todos={todos} handleRemove={handleRemove} />
         </AchievementListContainer>
         <TodoModal open={open} close={handleClose} data={eventData} />
+        {snackbar}
       </CalendarContainer>
     </motion.div>
   );
