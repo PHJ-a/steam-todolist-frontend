@@ -52,7 +52,8 @@ function Achievements() {
         await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-        showTodoAddedSnackbar();
+        setTimeout(() => showTodoAddedSnackbar(), 1000);
+        
         navigate('/');
       } catch (error) {
         if (
