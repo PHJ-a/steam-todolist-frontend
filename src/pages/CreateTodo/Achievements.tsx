@@ -1,13 +1,15 @@
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import useAchievements from '../../hooks/useAchievements';
-import { useLocation, useNavigate } from 'react-router-dom';
-import AchievementsList from '../../components/Achievements/AchievementsList';
 import { motion } from 'framer-motion';
-import axiosInstance from '../../api/axios';
-import axios from 'axios';
+import AchievementsList from '../../components/Achievements/AchievementsList';
 import Loading from '../../components/common/Loading';
 import useSnackBar from '../../hooks/useSnackBar';
+import useAchievements, { Achievement } from '../../hooks/useAchievements';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../api/axios';
+import axios from 'axios';
 import icon from '../../assets/SnackBarIcon.png';
+import useTodos from '../../hooks/useTodos';
 
 function Achievements() {
   const location = useLocation();
@@ -19,8 +21,8 @@ function Achievements() {
     selectedAchievement,
     isLoading,
   } = useAchievements(game);
+  const { todos } = useTodos();
 
-  // 스낵바 네이밍 변경
   const { snackbar: existingTodoSnackbar, open: showExistingTodoSnackbar } =
     useSnackBar(
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -28,6 +30,7 @@ function Achievements() {
         <p>이미 진행중인 도전과제 입니다</p>
       </div>,
     );
+
   const {
     snackbar: errorAddingTodoSnackbar,
     open: showErrorAddingTodoSnackbar,
@@ -37,6 +40,7 @@ function Achievements() {
       <p>도전과제 추가 중 문제가 발생했습니다.</p>
     </div>,
   );
+
   const { snackbar: todoAddedSnackbar, open: showTodoAddedSnackbar } =
     useSnackBar(
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -45,16 +49,34 @@ function Achievements() {
       </div>,
     );
 
-  // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
+  const { snackbar: todoLimitSnackbar, open: showTodoLimitSnackbar } =
+    useSnackBar(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <img src={icon} width={50} height={50} />
+        <p>3개 이상의 도전과제를 추가할 수 없습니다.</p>
+      </div>,
+    );
+
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  // 도전과제 추가하기
   const handleCreateTodo = async () => {
+    //  todo가 3개 이상인 경우
+    if (todos.length >= 3) {
+      showTodoLimitSnackbar();
+      return;
+    }
+
     if (selectedAchievement) {
       try {
         await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-        setTimeout(() => showTodoAddedSnackbar(), 1000);
-        
-        navigate('/');
+        showTodoAddedSnackbar();
+        setTimeout(() => {
+          navigate('/');
+          showTodoAddedSnackbar();
+        }, 1000);
       } catch (error) {
         if (
           axios.isAxiosError<{ message: string; statusCode: number }>(error) &&
@@ -72,7 +94,13 @@ function Achievements() {
     }
   };
 
-  // 도전과제 완료율 계산
+  // 도전과제 선택 시 버튼으로 스크롤 이동
+  useEffect(() => {
+    if (selectedAchievement && buttonRef.current) {
+      buttonRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [selectedAchievement]);
+
   const totalAchievements = achievements.length;
   const completedAchievements = achievements.filter(
     (achievement) => achievement.achieved === 1,
@@ -82,7 +110,6 @@ function Achievements() {
       ? (completedAchievements / totalAchievements) * 100
       : 0;
 
-  // 선택한 게임의 도전과제가 없을 때
   if (achievements.length === 0 && !isLoading) {
     return (
       <AchievementsStyle
@@ -142,19 +169,22 @@ function Achievements() {
         />
       )}
       {selectedAchievement && (
-        <div onClick={handleCreateTodo} className='button'>
+        <div ref={buttonRef} onClick={handleCreateTodo} className='button'>
           <button>선택한 도전과제 추가하기</button>
         </div>
       )}
       {existingTodoSnackbar}
       {errorAddingTodoSnackbar}
       {todoAddedSnackbar}
+      {todoLimitSnackbar}
     </AchievementsStyle>
   );
 }
 
 const AchievementsStyle = styled(motion.div)`
   width: 100%;
+  padding-bottom: 20px;
+
   .title {
     display: flex;
     flex-direction: column;
@@ -193,7 +223,7 @@ const AchievementsStyle = styled(motion.div)`
   .button {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 15px;
 
     button {
       background: #395061;
