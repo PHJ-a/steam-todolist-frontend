@@ -49,7 +49,10 @@ const GameList = ({ games }: GameListProps) => {
   };
 
   return (
-    <GameListStyle>
+    <GameListStyle
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}>
       <SearchBar>
         <input
           type='text'
@@ -81,7 +84,7 @@ const GameList = ({ games }: GameListProps) => {
   );
 };
 
-const GameListStyle = styled.div`
+const GameListStyle = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
