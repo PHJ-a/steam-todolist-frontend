@@ -61,10 +61,15 @@ const AchievementItemStyle = styled(motion.div)<{
   gap: 10px;
   height: 80px;
   cursor: pointer;
-  overflow: hidden; /* Ensure content doesn't overflow */
+  overflow: hidden;
   position: relative;
   padding: 10px;
-
+  @media (max-width: 768px) {
+    height: 100px;
+    .achieved {
+      display: none;
+    }
+  }
   h3 {
     margin: 0;
     font-size: 0.9rem;

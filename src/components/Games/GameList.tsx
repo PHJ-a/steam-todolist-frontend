@@ -65,6 +65,7 @@ const GameList = ({ games }: GameListProps) => {
             key={i}
             $isActive={i === index}
             onClick={() => handleDotClick(i)}
+            whileHover={{ scale: 1.1 }}
           />
         ))}
       </Dots>
@@ -127,7 +128,7 @@ const Dots = styled.div`
   }
 `;
 
-const Dot = styled.div<{ $isActive: boolean }>`
+const Dot = styled(motion.div)<{ $isActive: boolean }>`
   width: 70px;
   height: 5px;
   background-color: ${(props) => (props.$isActive ? '#007bff' : '#ccc')};
