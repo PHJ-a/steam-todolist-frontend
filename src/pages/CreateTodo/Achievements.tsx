@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import axiosInstance from '../../api/axios';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
+import useSnackBar from '../../hooks/useSnackBar';
+import icon from '../../assets/SnackBarIcon.png';
 
 function Achievements() {
   const location = useLocation();
@@ -18,6 +20,31 @@ function Achievements() {
     isLoading,
   } = useAchievements(game);
 
+  // 스낵바 네이밍 변경
+  const { snackbar: existingTodoSnackbar, open: showExistingTodoSnackbar } =
+    useSnackBar(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <img src={icon} width={50} height={50} />
+        <p>이미 진행중인 도전과제 입니다</p>
+      </div>,
+    );
+  const {
+    snackbar: errorAddingTodoSnackbar,
+    open: showErrorAddingTodoSnackbar,
+  } = useSnackBar(
+    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+      <img src={icon} width={50} height={50} />
+      <p>도전과제 추가 중 문제가 발생했습니다.</p>
+    </div>,
+  );
+  const { snackbar: todoAddedSnackbar, open: showTodoAddedSnackbar } =
+    useSnackBar(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <img src={icon} width={50} height={50} />
+        <p>도전과제가 추가되었습니다.</p>
+      </div>,
+    );
+
   // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
     if (selectedAchievement) {
@@ -25,17 +52,21 @@ function Achievements() {
         await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-        alert('도전과제가 추가되었습니다.');
+        setTimeout(() => showTodoAddedSnackbar(), 1000);
+        
         navigate('/');
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const { message, statusCode } = error.response.data;
+        if (
+          axios.isAxiosError<{ message: string; statusCode: number }>(error) &&
+          error.response
+        ) {
+          const { statusCode } = error.response.data;
 
           if (statusCode === 400) {
-            alert(message);
+            showExistingTodoSnackbar();
           }
         } else {
-          alert('도전과제 추가 중 문제가 발생했습니다.');
+          showErrorAddingTodoSnackbar();
         }
       }
     }
@@ -43,11 +74,9 @@ function Achievements() {
 
   // 도전과제 완료율 계산
   const totalAchievements = achievements.length;
-  // 도전과제 중 achieved가 1인 것만 필터링
   const completedAchievements = achievements.filter(
     (achievement) => achievement.achieved === 1,
   ).length;
-  // 완료율 계산
   const completionRate =
     totalAchievements > 0
       ? (completedAchievements / totalAchievements) * 100
@@ -74,6 +103,7 @@ function Achievements() {
       </AchievementsStyle>
     );
   }
+
   return (
     <AchievementsStyle
       initial={{ opacity: 0, y: 20 }}
@@ -116,6 +146,9 @@ function Achievements() {
           <button>선택한 도전과제 추가하기</button>
         </div>
       )}
+      {existingTodoSnackbar}
+      {errorAddingTodoSnackbar}
+      {todoAddedSnackbar}
     </AchievementsStyle>
   );
 }
