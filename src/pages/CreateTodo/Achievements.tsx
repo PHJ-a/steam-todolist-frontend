@@ -46,7 +46,8 @@ function Achievements() {
         await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-        open3();
+        setTimeout(() => open3(), 1000);
+
         // alert('도전과제가 추가되었습니다.');
         navigate('/');
       } catch (error) {
