@@ -109,12 +109,12 @@ const Column = styled(motion.div)`
   gap: 12px;
   background-color: rgba(0, 0, 0, 0.2);
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1300px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 

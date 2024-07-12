@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { useNavigate } from 'react-router-dom';
 import { Game } from '../../hooks/useGames';
+import { formatLastPlayed, formatPlayTime } from '../../utils/format';
 
 type GameItemProps = {
   game: Game;
@@ -50,11 +51,11 @@ const GameItem = ({ game }: GameItemProps) => {
       <div className='playtime'>
         <span className='total-playtime'>
           <span className='label'>총 플레이 시간</span>
-          18.8시간
+          {formatPlayTime(game.playTime)}
         </span>
         <span className='last-playtime'>
           <span className='label'>최근 플레이</span>
-          2020년 5월 1일
+          {formatLastPlayed(game.lastPlayedTime)}
         </span>
       </div>
     </GameItemStyle>
@@ -76,6 +77,13 @@ const GameItemStyle = styled(motion.div)`
   grid-template-columns: 210px min-content auto;
   max-height: 170px;
 
+  @media (max-width: 440px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'img'
+      'title'
+      'playtime';
+  }
   .img {
     width: 200px;
     grid-area: img;
