@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import axiosInstance from '../../api/axios';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
+import useSnackBar from '../../hooks/useSnackBar';
+import icon from '../../assets/SnackBarIcon.png';
 
 function Achievements() {
   const location = useLocation();
@@ -18,6 +20,25 @@ function Achievements() {
     isLoading,
   } = useAchievements(game);
 
+  const { snackbar: snackbar1, open: open1 } = useSnackBar(
+    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+      <img src={icon} width={50} height={50} />
+      <p>이미 진행중인 도전과제 입니다</p>
+    </div>,
+  );
+  const { snackbar: snackbar2, open: open2 } = useSnackBar(
+    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+      <img src={icon} width={50} height={50} />
+      <p>도전과제 추가 중 문제가 발생했습니다.</p>
+    </div>,
+  );
+  const { snackbar: snackbar3, open: open3 } = useSnackBar(
+    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+      <img src={icon} width={50} height={50} />
+      <p>도전과제가 추가되었습니다.</p>
+    </div>,
+  );
+
   // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
     if (selectedAchievement) {
@@ -25,17 +46,24 @@ function Achievements() {
         await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-        alert('도전과제가 추가되었습니다.');
+        open3();
+        // alert('도전과제가 추가되었습니다.');
         navigate('/');
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const { message, statusCode } = error.response.data;
+        if (
+          axios.isAxiosError<{ message: string; statusCode: number }>(error) &&
+          error.response
+        ) {
+          // const { message, statusCode } = error.response.data;
+          const { statusCode } = error.response.data;
 
           if (statusCode === 400) {
-            alert(message);
+            open1();
+            // alert(message);
           }
         } else {
-          alert('도전과제 추가 중 문제가 발생했습니다.');
+          // alert('도전과제 추가 중 문제가 발생했습니다.');
+          open2();
         }
       }
     }
@@ -116,6 +144,9 @@ function Achievements() {
           <button>선택한 도전과제 추가하기</button>
         </div>
       )}
+      {snackbar1}
+      {snackbar2}
+      {snackbar3}
     </AchievementsStyle>
   );
 }
