@@ -37,8 +37,19 @@ const useAchievements = (game: Game | null) => {
     fetchAchievements();
   }, [game]);
 
-  // 도전과제가 달성된 순서대로 정렬
-  achievements.sort((a, b) => b.achieved - a.achieved);
+  // 도전과제가 달성된 순서대로 정렬 그리고 달성률 낮은순으로 정렬
+  achievements.sort((a, b) => {
+    // achived가 같으면 completedRate로 정렬
+    if (a.achieved === b.achieved) {
+      return a.completedRate.localeCompare(
+        // completedRate는 0.00 형식이므로 반올림
+        b.completedRate,
+        undefined,
+        { numeric: true, sensitivity: 'base' },
+      );
+    }
+    return b.achieved - a.achieved;
+  });
 
   return {
     achievements,
