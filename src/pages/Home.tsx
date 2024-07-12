@@ -17,6 +17,7 @@ import nyanCat from '../assets/nyan-cat-nyan.gif';
 moment.locale('ko-KR');
 
 const localizer = momentLocalizer(moment);
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 type CustomEvent = Event & {
   id: number;
@@ -48,8 +49,7 @@ const MyCalendar = () => {
         confirmButtonText: '로그인하러 가기',
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.href = `http://api.todos-steams-project.site/login
-          `;
+          window.location.href = BASE_URL + `/login`;
         }
       });
     }
