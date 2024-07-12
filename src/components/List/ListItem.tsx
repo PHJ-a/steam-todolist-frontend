@@ -1,35 +1,13 @@
 import styled from 'styled-components';
-import icon from '../../assets/SnackBarIcon.png';
-import useSnackBar from '../../hooks/useSnackBar';
 import { Todo } from '../../models/type';
-import useTodos from '../../hooks/useTodos';
-import axios from 'axios';
 
 type ListItemProps = {
   todo: Todo;
   isLoggedIn: boolean;
+  handleRemove: (id: number) => void;
 };
 
-const ListItem = ({ todo, isLoggedIn }: ListItemProps) => {
-  const { removeTodo } = useTodos();
-  const { snackbar, open } = useSnackBar(
-    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-      <img src={icon} width={50} height={50} />
-      <p>삭제가 완료되었습니다</p>
-    </div>,
-  );
-
-  const handleRemove = async (id: number) => {
-    try {
-      await removeTodo(id);
-      open();
-    } catch (error) {
-      if (axios.isAxiosError<{ message: string }>(error)) {
-        console.error(error);
-      }
-    }
-  };
-
+const ListItem = ({ todo, isLoggedIn, handleRemove }: ListItemProps) => {
   return (
     <AchievementItem isLoggedIn={isLoggedIn}>
       <div className='header'>
@@ -49,7 +27,6 @@ const ListItem = ({ todo, isLoggedIn }: ListItemProps) => {
           : new Date(Date.now()).toLocaleString()}
       </TimeInfo>
       <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
-      {snackbar}
     </AchievementItem>
   );
 };

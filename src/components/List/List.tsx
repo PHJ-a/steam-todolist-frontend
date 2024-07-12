@@ -10,9 +10,10 @@ import errorIcon from '../../assets/error.png';
 
 type AchievementListProps = {
   todos: Todo[];
+  handleRemove: (id: number) => void;
 };
 
-const AchievementList = ({ todos }: AchievementListProps) => {
+const AchievementList = ({ todos, handleRemove }: AchievementListProps) => {
   const { open, openModal, closeModal } = useModal();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -28,7 +29,12 @@ const AchievementList = ({ todos }: AchievementListProps) => {
       </div>
 
       {todos.map((todo, index) => (
-        <ListItem key={index} todo={todo} isLoggedIn={isLoggedIn} />
+        <ListItem
+          key={index}
+          todo={todo}
+          isLoggedIn={isLoggedIn}
+          handleRemove={handleRemove}
+        />
       ))}
       {isLoggedIn && (
         <CreateButton
