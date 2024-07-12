@@ -30,7 +30,6 @@ function AchievementItem({
       <div className='info'>
         <h3>{achievement.displayName}</h3>
         <p className='description'>{achievement.description}</p>
-        {/* TODO: 달성률을 bar로 표현하기 */}
         <p className='completedRate'>
           전체 플레이어 달성률: {achievement.completedRate}%
         </p>
@@ -40,6 +39,7 @@ function AchievementItem({
           <p>2022년 3월 26일 오후 11시 38분에 획득</p>
         ) : null}
       </div>
+      {achievement.achieved === 1 && <div className='gradient_border' />}
     </AchievementItemStyle>
   );
 }
@@ -52,10 +52,11 @@ const AchievementItemStyle = styled(motion.div)<{
   align-items: center;
   background: ${(props) =>
     props.isSelected
-      ? 'linear-gradient(135deg, #4a90e2, #50a0f0)'
+      ? 'linear-gradient(135deg, rgba(74, 144, 226, 0.4), rgba(80, 160, 240, 0.4))'
       : props.achieved === 1
-      ? 'linear-gradient(135deg, #6e8efb, #a777e3)'
+      ? 'linear-gradient(135deg, rgba(110, 142, 251, 0.4), rgba(167, 119, 227, 0.4))'
       : 'rgba(0, 0, 0, 0.5)'};
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: background 0.3s ease, transform 0.3s ease;
   gap: 10px;
@@ -64,6 +65,7 @@ const AchievementItemStyle = styled(motion.div)<{
   overflow: hidden;
   position: relative;
   padding: 10px;
+
   @media (max-width: 768px) {
     height: 100px;
     .achieved {
@@ -120,6 +122,58 @@ const AchievementItemStyle = styled(motion.div)<{
     p {
       font-size: 0.71rem;
       color: #fff;
+    }
+  }
+
+  .gradient_border {
+    clip-path: polygon(
+      0% 100%,
+      3px 100%,
+      3px 3px,
+      calc(100% - 3px) 3px,
+      calc(100% - 3px) calc(100% - 3px),
+      3px calc(100% - 3px),
+      3px 100%,
+      100% 100%,
+      100% 0%,
+      0% 0%
+    );
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: -50%;
+      top: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg,
+        #dcdcdc,
+        #c0c0c0,
+        #a9a9a9,
+        #808080,
+        #dcdcdc,
+        #c0c0c0
+      );
+
+      background-size: 200% 100%;
+      background-position: 0 50%;
+      animation: colorShift 2s linear infinite;
+    }
+  }
+
+  @keyframes colorShift {
+    0% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
     }
   }
 `;
