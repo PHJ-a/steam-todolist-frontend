@@ -46,7 +46,7 @@ const useAchievements = (game: Game | null) => {
         // completedRate는 0.00 형식이므로 반올림
         b.completedRate,
         undefined,
-        { numeric: true, sensitivity: 'base' },
+        { numeric: true },
       );
     }
     return b.achieved - a.achieved;
