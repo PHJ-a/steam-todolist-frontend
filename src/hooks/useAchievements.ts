@@ -18,6 +18,7 @@ const useAchievements = (game: Game | null) => {
   const [selectedAchievement, setSelectedAchievement] =
     useState<Achievement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -27,7 +28,7 @@ const useAchievements = (game: Game | null) => {
         setAchievements(response.data.achievements);
       } catch (error) {
         if (axios.isAxiosError<{ message: string }>(error)) {
-          console.log(error);
+          setError(true);
         }
       } finally {
         setIsLoading(false);
@@ -56,6 +57,7 @@ const useAchievements = (game: Game | null) => {
     selectedAchievement,
     setSelectedAchievement,
     isLoading,
+    error,
   };
 };
 
