@@ -12,6 +12,7 @@ export interface Game {
 const useGames = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -20,7 +21,7 @@ const useGames = () => {
         setGames(response.data);
       } catch (error) {
         if (axios.isAxiosError<{ message: string }>(error)) {
-          console.log(error);
+          setError(true);
         }
       } finally {
         setIsLoading(false);
@@ -30,7 +31,7 @@ const useGames = () => {
     fetchGames();
   }, []);
 
-  return { games, isLoading };
+  return { games, isLoading, error };
 };
 
 export default useGames;
