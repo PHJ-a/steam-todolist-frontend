@@ -14,7 +14,6 @@ import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
 import nyanCat from '../assets/nyan-cat-nyan.gif';
 import useSnackBar from '../hooks/useSnackBar';
-import icon from '../assets/SnackBarIcon.png';
 import axios from 'axios';
 
 moment.locale('ko-KR');
@@ -30,17 +29,12 @@ const MyCalendar = () => {
   const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
   const { todos, removeTodo } = useTodos();
-  const { snackbar, open: openSnackbar } = useSnackBar(
-    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-      <img src={icon} width={50} height={50} />
-      <p>삭제가 완료되었습니다</p>
-    </div>,
-  );
+  const { snackbar, open: openSnackbar } = useSnackBar();
 
   const handleRemove = async (id: number) => {
     try {
       await removeTodo(id);
-      openSnackbar();
+      openSnackbar('삭제가 완료되었습니다');
     } catch (error) {
       if (axios.isAxiosError<{ message: string }>(error)) {
         console.error(error);

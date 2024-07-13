@@ -7,7 +7,6 @@ import axiosInstance from '../../api/axios';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
 import useSnackBar from '../../hooks/useSnackBar';
-import icon from '../../assets/SnackBarIcon.png';
 
 function Achievements() {
   const location = useLocation();
@@ -20,30 +19,14 @@ function Achievements() {
     isLoading,
   } = useAchievements(game);
 
-  // 스낵바 네이밍 변경
   const { snackbar: existingTodoSnackbar, open: showExistingTodoSnackbar } =
-    useSnackBar(
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <img src={icon} width={50} height={50} />
-        <p>이미 진행중인 도전과제 입니다</p>
-      </div>,
-    );
+    useSnackBar();
   const {
     snackbar: errorAddingTodoSnackbar,
     open: showErrorAddingTodoSnackbar,
-  } = useSnackBar(
-    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-      <img src={icon} width={50} height={50} />
-      <p>도전과제 추가 중 문제가 발생했습니다.</p>
-    </div>,
-  );
+  } = useSnackBar();
   const { snackbar: todoAddedSnackbar, open: showTodoAddedSnackbar } =
-    useSnackBar(
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <img src={icon} width={50} height={50} />
-        <p>도전과제가 추가되었습니다.</p>
-      </div>,
-    );
+    useSnackBar();
 
   // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
@@ -52,9 +35,10 @@ function Achievements() {
         await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-        setTimeout(() => showTodoAddedSnackbar(), 1000);
-        
-        navigate('/');
+        showTodoAddedSnackbar('도전과제가 추가되었습니다.');
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       } catch (error) {
         if (
           axios.isAxiosError<{ message: string; statusCode: number }>(error) &&
@@ -63,10 +47,10 @@ function Achievements() {
           const { statusCode } = error.response.data;
 
           if (statusCode === 400) {
-            showExistingTodoSnackbar();
+            showExistingTodoSnackbar('이미 진행중인 도전과제 입니다');
           }
         } else {
-          showErrorAddingTodoSnackbar();
+          showErrorAddingTodoSnackbar('도전과제 추가 중 문제가 발생했습니다.');
         }
       }
     }
