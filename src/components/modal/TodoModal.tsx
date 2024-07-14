@@ -1,31 +1,59 @@
 import { ModalData } from '../../models/type';
 import Modal from './Modal';
-import img from '../../assets/eldenring.jpg';
 import styled from 'styled-components';
+import img from '../../assets/eldenring.jpg';
+import icon from '../../assets/도전과제 아이콘.jpg';
+import { calculateElapsedTime } from '../../utils/days';
 
 type TodoModalProps = {
   open: boolean;
   close: () => void;
   data: ModalData | null;
+  dummy?: boolean;
 };
 
-const TodoModal = ({ open, close, data }: TodoModalProps) => {
+const TodoModal = ({ open, close, data, dummy }: TodoModalProps) => {
   if (!data) return;
   return (
     <Modal open={open} onClickOutside close={close}>
       <Modal.Header title='도전과제 현황' close={close} />
       <Modal.Content>
         <GameImageWrapper>
-          <GameImage src={img} alt={data?.gameName} />
+          <GameImage
+            src={
+              dummy
+                ? img
+                : `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${data.gameId}/header.jpg`
+            }
+            alt={data?.gameName}
+          />
           <AbsoluteText>{data?.gameName}</AbsoluteText>
         </GameImageWrapper>
         <Title>
-          <img src={data.achieveIcon} className='icon' alt='Achievement Icon' />
+          <img
+            src={dummy ? icon : data.achieveIcon}
+            className='icon'
+            alt='Achievement Icon'
+          />
           <div className='title'>{data?.achieveName}</div>
         </Title>
         <ChallengeDesc>{data?.achieveDescription}</ChallengeDesc>
-        <StartTime>시작 시간: 2024년 7월 1일 14시 51분</StartTime>
-        <ElapsedTime>경과 시간: 10시간</ElapsedTime>
+        <StartTime>
+          시작 시간 :{' '}
+          {data.start.toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            timeZone: 'Asia/Seoul',
+          })}
+        </StartTime>
+        <ElapsedTime>
+          경과 시간:{' '}
+          {calculateElapsedTime(data.start, data.end ? data.end : new Date())}
+        </ElapsedTime>
         <ProgressContainer>
           <p>전체유저의 달성률 {data?.completedRate}%</p>
           <ProgressBar>
