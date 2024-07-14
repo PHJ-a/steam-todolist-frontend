@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import GameItem from './GameItem';
 import { motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
@@ -50,7 +49,10 @@ const GameList = ({ games }: GameListProps) => {
   };
 
   return (
-    <GameListStyle>
+    <GameListStyle
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}>
       <SearchBar>
         <input
           type='text'
@@ -65,6 +67,7 @@ const GameList = ({ games }: GameListProps) => {
             key={i}
             $isActive={i === index}
             onClick={() => handleDotClick(i)}
+            whileHover={{ scale: 1.1 }}
           />
         ))}
       </Dots>
@@ -81,7 +84,7 @@ const GameList = ({ games }: GameListProps) => {
   );
 };
 
-const GameListStyle = styled.div`
+const GameListStyle = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -109,12 +112,12 @@ const Column = styled(motion.div)`
   gap: 12px;
   background-color: rgba(0, 0, 0, 0.2);
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1300px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 
@@ -127,7 +130,7 @@ const Dots = styled.div`
   }
 `;
 
-const Dot = styled.div<{ $isActive: boolean }>`
+const Dot = styled(motion.div)<{ $isActive: boolean }>`
   width: 70px;
   height: 5px;
   background-color: ${(props) => (props.$isActive ? '#007bff' : '#ccc')};

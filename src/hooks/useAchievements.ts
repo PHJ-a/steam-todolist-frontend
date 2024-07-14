@@ -18,6 +18,7 @@ const useAchievements = (game: Game | null) => {
   const [selectedAchievement, setSelectedAchievement] =
     useState<Achievement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -27,7 +28,7 @@ const useAchievements = (game: Game | null) => {
         setAchievements(response.data.achievements);
       } catch (error) {
         if (axios.isAxiosError<{ message: string }>(error)) {
-          console.log(error);
+          setError(true);
         }
       } finally {
         setIsLoading(false);
@@ -37,14 +38,26 @@ const useAchievements = (game: Game | null) => {
     fetchAchievements();
   }, [game]);
 
-  // 도전과제가 달성된 순서대로 정렬
-  achievements.sort((a, b) => b.achieved - a.achieved);
+  // 도전과제가 달성된 순서대로 정렬 그리고 달성률 낮은순으로 정렬
+  achievements.sort((a, b) => {
+    // achived가 같으면 completedRate로 정렬
+    if (a.achieved === b.achieved) {
+      return a.completedRate.localeCompare(
+        // completedRate는 0.00 형식이므로 반올림
+        b.completedRate,
+        undefined,
+        { numeric: true },
+      );
+    }
+    return b.achieved - a.achieved;
+  });
 
   return {
     achievements,
     selectedAchievement,
     setSelectedAchievement,
     isLoading,
+    error,
   };
 };
 
