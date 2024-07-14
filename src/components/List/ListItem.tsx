@@ -52,6 +52,9 @@ const AchievementItem = styled.div<AchievementItemProps>`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .exit {
+      cursor: pointer;
+    }
   }
 `;
 

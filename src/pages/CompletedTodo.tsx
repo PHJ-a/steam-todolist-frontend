@@ -5,12 +5,13 @@ import useModal from '../hooks/useModal';
 import { ModalData } from '../models/type';
 import TodoModal from '../components/modal/TodoModal';
 import { FaClock, FaEye, FaGamepad, FaSearch, FaTrophy } from 'react-icons/fa';
+import { calculateElapsedTime } from '../utils/days';
 
 const itemsPerPage = 8; // 페이지 당 항목 수
 
 const AchievementTable = () => {
   const { todos } = useCompletedTodos();
-  const { open, openModal, closeModal, getModalData } = useModal();
+  const { open, openModal, closeModal /*getModalData*/ } = useModal();
   const [modalData, setmodalData] = useState<ModalData | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -28,23 +29,23 @@ const AchievementTable = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  const hanldeModal = async (id: number) => {
-    // const data2: ModalData = {
-    //   todoId: 1,
-    //   gameName: `엘든링`,
-    //   gameId: 123,
-    //   achieveName: '엘든링 도전과제',
-    //   achieveDescription: '엘든링 도전과제 설명',
-    //   start: new Date('2024-06-22T00:00:00'),
-    //   end: new Date('2024-06-22T12:00:00'),
-    //   completedRate: '85',
-    //   achieveId: 1,
-    //   achieveIcon: '',
-    //   isFinished: false,
-    //   achieveTag: '',
-    // };
-    const data = await getModalData(id);
-    setmodalData(data);
+  const hanldeModal = async (/*id: number*/) => {
+    const data2: ModalData = {
+      todoId: 1,
+      gameName: `엘든링`,
+      gameId: 123,
+      achieveName: '엘든링 도전과제',
+      achieveDescription: '엘든링 도전과제 설명',
+      start: new Date('2024-06-22T00:00:00'),
+      end: new Date('2024-06-22T12:00:00'),
+      completedRate: '85',
+      achieveId: 1,
+      achieveIcon: '',
+      isFinished: true,
+      achieveTag: '',
+    };
+    // const data = await getModalData(id);
+    setmodalData(data2);
     openModal();
   };
 
@@ -93,14 +94,22 @@ const AchievementTable = () => {
             currentItems.map((todo) => (
               <TableRow
                 key={todo.todoId}
-                onClick={() => hanldeModal(todo.todoId)}>
+                onClick={() => hanldeModal(/*todo.todoId*/)}>
                 <TableCell>{todo.achieveName}</TableCell>
                 <TableCell>{todo.gameName}</TableCell>
-                <TableCell>{todo.start.toLocaleString()}</TableCell>
                 <TableCell>
-                  {(todo.end!.getTime() - todo.start.getTime()) /
-                    (1000 * 60 * 60) +
-                    '시간'}
+                  {todo.start.toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                    timeZone: 'Asia/Seoul',
+                  })}
+                </TableCell>
+                <TableCell>
+                  {calculateElapsedTime(todo.start, todo.end!)}
                 </TableCell>
                 <TableCell>
                   <StatusBadge>completed</StatusBadge>
@@ -134,7 +143,7 @@ const AchievementTable = () => {
           다음
         </PaginationButton>
       </Pagination>
-      <TodoModal open={open} close={closeModal} data={modalData} />
+      <TodoModal open={open} close={closeModal} data={modalData} dummy />
     </Wrapper>
   );
 };
