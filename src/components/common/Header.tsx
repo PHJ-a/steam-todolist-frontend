@@ -14,8 +14,7 @@ const Header = () => {
           </h1>
         </Link>
       </LogoContainer>
-      (
-      <UserProfile />)
+      <UserProfile />
     </HeaderContainer>
   );
 };
