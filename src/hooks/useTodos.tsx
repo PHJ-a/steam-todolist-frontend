@@ -1,6 +1,6 @@
 import { Todo } from '../models/type';
 import { useAuth } from '../context/AuthContext';
-import { deleteTodo, fetchTodos } from '../api/fetchs';
+import { deleteTodo, fetchTodos, updateTodo } from '../api/fetchs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const useTodos = () => {
@@ -23,10 +23,23 @@ const useTodos = () => {
     },
   });
 
+  const updateTodoMutation = useMutation({
+    mutationFn: updateTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todos'] });
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   const removeTodo = (id: number) => {
     removeTodoMutation.mutate(id);
   };
-  return { todos, removeTodo };
+  const updateTodoItem = (id: number) => {
+    updateTodoMutation.mutate(id);
+  };
+  return { todos, removeTodo, updateTodoItem };
 };
 
 export default useTodos;

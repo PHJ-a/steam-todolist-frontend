@@ -28,7 +28,7 @@ type CustomEvent = Event & {
 const MyCalendar = () => {
   const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
-  const { todos, removeTodo } = useTodos();
+  const { todos, removeTodo, updateTodoItem } = useTodos();
   const { snackbar, open: openSnackbar } = useSnackBar();
 
   const handleRemove = async (id: number) => {
@@ -38,6 +38,17 @@ const MyCalendar = () => {
     } catch (error) {
       if (axios.isAxiosError<{ message: string }>(error)) {
         console.error(error);
+      }
+    }
+  };
+
+  const handleUpdate = async (id: number) => {
+    try {
+      updateTodoItem(id);
+      openSnackbar('도전과제가 완료되었습니다');
+    } catch (error) {
+      if (axios.isAxiosError<{ message: string }>(error)) {
+        openSnackbar('도전과제를 완료해주세요');
       }
     }
   };
@@ -154,7 +165,11 @@ const MyCalendar = () => {
         }
 
         <AchievementListContainer>
-          <AchievementList todos={todos} handleRemove={handleRemove} />
+          <AchievementList
+            todos={todos}
+            handleRemove={handleRemove}
+            handleUpdate={handleUpdate}
+          />
         </AchievementListContainer>
         <TodoModal open={open} close={handleClose} data={eventData} />
         {snackbar}
