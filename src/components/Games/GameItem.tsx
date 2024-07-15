@@ -53,9 +53,12 @@ const GameItem = ({ game }: GameItemProps) => {
           <span className='label'>총 플레이 시간</span>
           {formatPlayTime(game.playTime)}
         </span>
+
         <span className='last-playtime'>
           <span className='label'>최근 플레이</span>
-          {formatLastPlayed(game.lastPlayedTime)}
+          {game.lastPlayedTime
+            ? formatLastPlayed(game.lastPlayedTime)
+            : '플레이 기록 없음'}
         </span>
       </div>
     </GameItemStyle>
