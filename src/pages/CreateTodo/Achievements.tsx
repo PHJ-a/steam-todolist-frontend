@@ -146,7 +146,7 @@ function Achievements() {
             {totalAchievements} 중 {completedAchievements} (
             {completionRate.toFixed(1)}%) 개의 도전과제 완료
           </span>
-          <ProgressBar completionRate={completionRate} />
+          <ProgressBar $completionRate={completionRate} />
         </div>
       </Title>
       {renderContent()}
@@ -184,7 +184,7 @@ const Title = styled.div`
   }
 `;
 
-const ProgressBar = styled.div<{ completionRate: number }>`
+const ProgressBar = styled.div<{ $completionRate: number }>`
   background: #3a3a3a;
   padding: 1px;
   border: 1px solid #aeaeae;
@@ -195,7 +195,7 @@ const ProgressBar = styled.div<{ completionRate: number }>`
     display: block;
     background: #5f98d3;
     height: 8px;
-    width: ${({ completionRate }) => `${completionRate}%`};
+    width: ${({ $completionRate }) => `${$completionRate}%`};
     transition: width 0.5s ease-in-out;
   }
 `;
