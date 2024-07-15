@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Achievement } from '../../hooks/useAchievements';
+import { formatUnlockTime } from '../../utils/format';
 
 type AchievementItemProps = {
   achievement: Achievement;
@@ -36,7 +37,7 @@ function AchievementItem({
       </div>
       <div className={achievement.achieved === 1 ? 'achieved' : ''}>
         {achievement.achieved === 1 ? (
-          <p>2022년 3월 26일 오후 11시 38분에 획득</p>
+          <p>{formatUnlockTime(achievement.unlockTime)} 획득</p>
         ) : null}
       </div>
       {achievement.achieved === 1 && <div className='gradient_border' />}
