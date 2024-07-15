@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import axiosInstance from '../api/axios';
-import axios from 'axios';
+// src/hooks/useGames.ts
+import { useQuery } from '@tanstack/react-query';
+import { fetchGames } from '../api/games';
 
 export interface Game {
   appid: number;
@@ -9,28 +9,16 @@ export interface Game {
 }
 
 const useGames = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<boolean>(false);
+  const { data, error, isLoading } = useQuery<Game[], Error>({
+    queryKey: ['games'],
+    queryFn: fetchGames,
+  });
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const response = await axiosInstance.get('/game');
-        setGames(response.data);
-      } catch (error) {
-        if (axios.isAxiosError<{ message: string }>(error)) {
-          setError(true);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchGames();
-  }, []);
-
-  return { games, isLoading, error };
+  return {
+    games: data || [],
+    isLoading,
+    error: !!error,
+  };
 };
 
 export default useGames;
