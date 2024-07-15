@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useNavigate } from 'react-router-dom';
 import { Game } from '../../hooks/useGames';
-import { formatLastPlayed, formatPlayTime } from '../../utils/format';
+import { formatPlayTime } from '../../utils/format';
 
 type GameItemProps = {
   game: Game;
@@ -49,17 +49,8 @@ const GameItem = ({ game }: GameItemProps) => {
       </div>
       <h3 className='title'>{game.name}</h3>
       <div className='playtime'>
-        <span className='total-playtime'>
-          <span className='label'>총 플레이 시간</span>
-          {formatPlayTime(game.playTime)}
-        </span>
-
-        <span className='last-playtime'>
-          <span className='label'>최근 플레이</span>
-          {game.lastPlayedTime
-            ? formatLastPlayed(game.lastPlayedTime)
-            : '플레이 기록 없음'}
-        </span>
+        <span className='label'>총 플레이 시간</span>
+        {formatPlayTime(game.playTime)}
       </div>
     </GameItemStyle>
   );
@@ -75,8 +66,7 @@ const GameItemStyle = styled(motion.div)`
   padding: 10px;
   grid-template-areas:
     'img title title'
-    'img playtime playtime'
-    'img achievements achievements';
+    'img playtime playtime';
   grid-template-columns: 210px min-content auto;
   max-height: 170px;
 
@@ -108,48 +98,12 @@ const GameItemStyle = styled(motion.div)`
 
   .playtime {
     grid-area: playtime;
-    display: grid;
-    grid-template-areas:
-      'total-playtime last-playtime'
-      'achievements achievements';
-    row-gap: 10px;
-    span {
-      font-size: 0.8em;
-    }
-
+    display: flex;
+    gap: 10px;
+    font-size: 0.75rem;
     .label {
       font-weight: bold;
-      font-size: 0.9em;
       grid-area: label;
-    }
-
-    .total-playtime {
-      grid-area: total-playtime;
-      display: inline-flex;
-      flex-direction: column;
-      row-gap: 5px;
-    }
-
-    .last-playtime {
-      grid-area: last-playtime;
-      display: inline-flex;
-      flex-direction: column;
-      row-gap: 5px;
-    }
-
-    .achievements {
-      grid-area: achievements;
-      display: grid;
-      grid-template-areas:
-        'label fraction'
-        'bar bar';
-      row-gap: 5px;
-      align-items: center;
-
-      .fraction {
-        grid-area: fraction;
-        text-align: end;
-      }
     }
   }
 `;
