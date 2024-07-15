@@ -37,6 +37,7 @@ function Achievements() {
 
   // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
+    if (!todos) return;
     if (todos.length >= 3) {
       showTodoLimitSnackbar('도전과제는 최대 3개까지만 추가할 수 있습니다.');
       return;
