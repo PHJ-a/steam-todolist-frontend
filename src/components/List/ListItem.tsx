@@ -10,7 +10,7 @@ type ListItemProps = {
 
 const ListItem = ({ todo, isLoggedIn, handleRemove }: ListItemProps) => {
   return (
-    <AchievementItem isLoggedIn={isLoggedIn}>
+    <AchievementItem $isLoggedIn={isLoggedIn}>
       <div className='header'>
         <GameName>{todo.gameName}</GameName>
         <div className='exit' onClick={() => handleRemove(todo.todoId)}>
@@ -24,13 +24,13 @@ const ListItem = ({ todo, isLoggedIn, handleRemove }: ListItemProps) => {
         <br />
         경과시간: {calculateElapsedTime(todo.start, todo.end)}
       </TimeInfo>
-      <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
+      <Status $isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
     </AchievementItem>
   );
 };
 
 type AchievementItemProps = {
-  isLoggedIn: boolean;
+  $isLoggedIn: boolean;
 };
 
 const AchievementItem = styled.div<AchievementItemProps>`
@@ -40,7 +40,7 @@ const AchievementItem = styled.div<AchievementItemProps>`
   background-color: #2a475e;
   color: #c7d5e0;
   ${(props) =>
-    !props.isLoggedIn &&
+    !props.$isLoggedIn &&
     `
     filter: blur(2px);
     pointer-events: none;
@@ -72,10 +72,10 @@ const TimeInfo = styled.div`
   margin-top: 5px;
 `;
 
-const Status = styled.div<{ isCompleted: string | null }>`
+const Status = styled.div<{ $isCompleted: string | null }>`
   margin-top: 10px;
   font-size: 14px;
-  color: ${(props) => (props.isCompleted ? '#a1cd44' : '#ff8c00')};
+  color: ${(props) => (props.$isCompleted ? '#a1cd44' : '#ff8c00')};
   font-weight: bold;
 `;
 
