@@ -1,5 +1,6 @@
-const calculateElapsedTime = (start: Date, end: Date) => {
-  const elapsedMilliseconds = end.getTime() - start.getTime();
+const calculateElapsedTime = (start: Date, end: Date | null) => {
+  const endTime = end ? end : new Date();
+  const elapsedMilliseconds = endTime.getTime() - start.getTime();
   const hours = Math.floor(elapsedMilliseconds / (1000 * 60 * 60));
   const minutes = Math.floor(
     (elapsedMilliseconds % (1000 * 60 * 60)) / (1000 * 60),

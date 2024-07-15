@@ -40,8 +40,7 @@ const TodoModal = ({ open, close, data, dummy }: TodoModalProps) => {
         <ChallengeDesc>{data?.achieveDescription}</ChallengeDesc>
         <StartTime>시작 시간 : {formatToKoreanTime(data.start)}</StartTime>
         <ElapsedTime>
-          경과 시간:{' '}
-          {calculateElapsedTime(data.start, data.end ? data.end : new Date())}
+          경과 시간: {calculateElapsedTime(data.start, data.end)}
         </ElapsedTime>
         <ProgressContainer>
           <p>전체유저의 달성률 {data?.completedRate}%</p>

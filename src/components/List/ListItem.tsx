@@ -22,8 +22,7 @@ const ListItem = ({ todo, isLoggedIn, handleRemove }: ListItemProps) => {
       <TimeInfo>
         시작시간: {formatToKoreanTime(todo.start)}
         <br />
-        경과시간:{' '}
-        {calculateElapsedTime(todo.start, todo.end ? todo.end : new Date())}
+        경과시간: {calculateElapsedTime(todo.start, todo.end)}
       </TimeInfo>
       <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
     </AchievementItem>
