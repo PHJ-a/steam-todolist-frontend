@@ -1,7 +1,7 @@
 export interface Todo {
   todoId: number;
-  start: Date;
-  end: Date | null;
+  start: string;
+  end: string | null;
   isFinished: boolean;
   achieveId: number;
   achieveName: string;
@@ -11,8 +11,8 @@ export interface Todo {
 
 export interface ModalData {
   todoId: number;
-  start: Date;
-  end: Date | null;
+  start: string;
+  end: string | null;
   isFinished: boolean;
   achieveId: number;
   achieveName: string;

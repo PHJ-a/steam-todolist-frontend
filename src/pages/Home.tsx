@@ -76,8 +76,8 @@ const MyCalendar = () => {
   const colorsTodo: CustomEvent[] = todos.map((todo, index) => ({
     id: todo.todoId,
     title: todo.achieveName,
-    start: todo.start,
-    end: todo.end || new Date(),
+    start: new Date(todo.start),
+    end: new Date(),
     resource: { color: colors[index % colors.length] },
   }));
 
