@@ -40,6 +40,7 @@ const LogoContainer = styled.div`
   }
 
   h1 {
+    margin: 4px 0;
     gap: 5px;
     display: flex;
     align-items: center;

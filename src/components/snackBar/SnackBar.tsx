@@ -38,7 +38,7 @@ const getAnimation = (animationClassName: string) => {
   }
 };
 
-const StyledSnackbarItem = styled.div<{ animationClassName: string }>`
+const StyledSnackbarItem = styled.div<{ $animationClassName: string }>`
   display: flex;
   justify-content: center;
   opacity: 0;
@@ -53,7 +53,7 @@ const StyledSnackbarItem = styled.div<{ animationClassName: string }>`
   background-color: #1a73e8;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
-  ${({ animationClassName }) => getAnimation(animationClassName)}
+  ${({ $animationClassName }) => getAnimation($animationClassName)}
 
   p {
     margin: 0;
@@ -91,7 +91,7 @@ const SnackbarItem = ({ status, setStatus, children }: SnackBarProps) => {
   return (
     <StyledSnackbarItem
       ref={elemRef}
-      animationClassName={animationClassName}
+      $animationClassName={animationClassName}
       onAnimationEnd={handleAnimationEnd}>
       {children}
     </StyledSnackbarItem>
