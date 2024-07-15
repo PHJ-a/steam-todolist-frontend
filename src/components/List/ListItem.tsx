@@ -16,7 +16,7 @@ const ListItem = ({
   handleUpdate,
 }: ListItemProps) => {
   return (
-    <AchievementItem isLoggedIn={isLoggedIn}>
+    <AchievementItem $isLoggedIn={isLoggedIn}>
       <div className='header'>
         <GameName>{todo.gameName}</GameName>
         <div className='exit' onClick={() => handleRemove(todo.todoId)}>
@@ -43,7 +43,7 @@ const ListItem = ({
 };
 
 type AchievementItemProps = {
-  isLoggedIn: boolean;
+  $isLoggedIn: boolean;
 };
 
 const AchievementItem = styled.div<AchievementItemProps>`
@@ -53,7 +53,7 @@ const AchievementItem = styled.div<AchievementItemProps>`
   background-color: #2a475e;
   color: #c7d5e0;
   ${(props) =>
-    !props.isLoggedIn &&
+    !props.$isLoggedIn &&
     `
     filter: blur(2px);
     pointer-events: none;

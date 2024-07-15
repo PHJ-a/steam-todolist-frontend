@@ -1,14 +1,14 @@
-import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import AchievementsList from '../../components/Achievements/AchievementsList';
-import Loading from '../../components/common/Loading';
-import useSnackBar from '../../hooks/useSnackBar';
 import useAchievements from '../../hooks/useAchievements';
 import { useLocation, useNavigate } from 'react-router-dom';
+import AchievementsList from '../../components/Achievements/AchievementsList';
+import { motion } from 'framer-motion';
 import axiosInstance from '../../api/axios';
 import axios from 'axios';
-// import useTodos from '../../hooks/useTodos';
+import Loading from '../../components/common/Loading';
+import useSnackBar from '../../hooks/useSnackBar';
+import { useEffect, useRef } from 'react';
+import useTodos from '../../hooks/useTodos';
 
 function Achievements() {
   const location = useLocation();
@@ -21,7 +21,7 @@ function Achievements() {
     isLoading,
     error,
   } = useAchievements(game);
-  // const { todos } = useTodos();
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   const { snackbar: existingTodoSnackbar, open: showExistingTodoSnackbar } =
     useSnackBar();
@@ -29,26 +29,24 @@ function Achievements() {
     snackbar: errorAddingTodoSnackbar,
     open: showErrorAddingTodoSnackbar,
   } = useSnackBar();
-
   const { snackbar: todoAddedSnackbar, open: showTodoAddedSnackbar } =
     useSnackBar();
+  const { snackbar: todoLimitSnackbar, open: showTodoLimitSnackbar } =
+    useSnackBar();
+  const { todos } = useTodos();
 
-  const buttonRef = useRef<HTMLDivElement>(null);
-
-  // 도전과제 추가하기
+  // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
-    //  todo가 3개 이상인 경우
-    // if (todos.length >= 3) {
-    //   showTodoLimitSnackbar();
-    //   return;
-    // }
-
+    if (!todos) return;
+    if (todos.length >= 3) {
+      showTodoLimitSnackbar('도전과제는 최대 3개까지만 추가할 수 있습니다.');
+      return;
+    }
     if (selectedAchievement) {
       try {
         await axiosInstance.post('/todo', {
           id: selectedAchievement.id,
         });
-
         showTodoAddedSnackbar('도전과제가 추가되었습니다.');
         setTimeout(() => {
           navigate('/');
@@ -70,7 +68,6 @@ function Achievements() {
     }
   };
 
-  // 도전과제 선택 시 버튼으로 스크롤 이동
   useEffect(() => {
     if (selectedAchievement && buttonRef.current) {
       buttonRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -88,14 +85,21 @@ function Achievements() {
       : 0;
 
   const renderContent = () => {
+    // 에러 발생 시
     if (error) {
       return (
-        <ErrorMessage>도전과제를 불러오는 중 문제가 발생했습니다.</ErrorMessage>
+        <ErrorContainer>
+          <span>도전과제를 불러오는 중 문제가 발생했습니다.</span>
+        </ErrorContainer>
       );
     }
-
+    // 도전과제가 없을 때
     if (achievements.length === 0 && !isLoading) {
-      return <ErrorMessage>해당 게임은 도전과제가 없습니다.</ErrorMessage>;
+      return (
+        <ErrorContainer>
+          <span>해당 게임은 도전과제가 없습니다.</span>
+        </ErrorContainer>
+      );
     }
 
     return (
@@ -111,10 +115,15 @@ function Achievements() {
             isSelected={selectedAchievement}
           />
         )}
+        {selectedAchievement && (
+          <ButtonContainer ref={buttonRef} onClick={handleCreateTodo}>
+            <button>선택한 도전과제 추가하기</button>
+          </ButtonContainer>
+        )}
         {existingTodoSnackbar}
         {errorAddingTodoSnackbar}
         {todoAddedSnackbar}
-        {/* {todoLimitSnackbar} */}
+        {todoLimitSnackbar}
       </>
     );
   };
@@ -126,27 +135,22 @@ function Achievements() {
       transition={{ duration: 0.5 }}>
       <Title>
         <h2>도전과제를 선택해 주세요.</h2>
-        <GameImage>
+        <div className='game-img'>
           <img
             src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/header.jpg`}
             alt={game.name}
           />
-        </GameImage>
+        </div>
         <h3>{game.name}</h3>
-        <CompletionInfo>
+        <div>
           <span>
             {totalAchievements} 중 {completedAchievements} (
             {completionRate.toFixed(1)}%) 개의 도전과제 완료
           </span>
-          <ProgressBar completionRate={completionRate} />
-        </CompletionInfo>
+          <ProgressBar $completionRate={completionRate} />
+        </div>
       </Title>
       {renderContent()}
-      {selectedAchievement && (
-        <ButtonContainer ref={buttonRef} onClick={handleCreateTodo}>
-          <button>선택한 도전과제 추가하기</button>
-        </ButtonContainer>
-      )}
     </AchievementsStyle>
   );
 }
@@ -167,39 +171,42 @@ const Title = styled.div`
   h3 {
     margin: 0;
   }
-`;
 
-const GameImage = styled.div`
-  height: 130px;
+  .game-img {
+    height: 100px;
 
-  img {
-    height: 100%;
-    border: 0;
-    padding: 4px;
-    margin: 0;
-    background: rgba(0, 0, 0, 0.5);
+    img {
+      height: 100%;
+      border: 0;
+      padding: 4px;
+      margin: 0;
+      background: rgba(0, 0, 0, 0.5);
+    }
   }
 `;
 
-const CompletionInfo = styled.div`
-  text-align: center;
-`;
-
-const ProgressBar = styled.div<{ completionRate: number }>`
+const ProgressBar = styled.div<{ $completionRate: number }>`
   background: #3a3a3a;
   padding: 1px;
   border: 1px solid #aeaeae;
   max-width: 300px;
-  margin-top: 8px;
 
   &::after {
     content: '';
     display: block;
     background: #5f98d3;
     height: 8px;
-    width: ${({ completionRate }) => `${completionRate}%`};
+    width: ${({ $completionRate }) => `${$completionRate}%`};
     transition: width 0.5s ease-in-out;
   }
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #fff;
 `;
 
 const LoadingContainer = styled.div`
@@ -223,17 +230,6 @@ const ButtonContainer = styled.div`
       background: #4a90e2;
     }
   }
-`;
-
-const ErrorMessage = styled.span`
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 20px;
 `;
 
 export default Achievements;
