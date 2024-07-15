@@ -6,7 +6,6 @@ export interface Game {
   appid: number;
   name: string;
   playTime: number;
-  lastPlayedTime: string;
 }
 
 const useGames = () => {
