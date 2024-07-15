@@ -1,6 +1,6 @@
 import { Todo } from '../models/type';
 import { useQuery } from '@tanstack/react-query';
-import { fetchCompletedTodos } from '../api/fetchs';
+// import { fetchCompletedTodos } from '../api/fetchs';
 
 const useCompletedTodos = () => {
   const {
@@ -9,7 +9,7 @@ const useCompletedTodos = () => {
     error,
   } = useQuery<Todo[]>({
     queryKey: ['completedTodos'],
-    queryFn: fetchCompletedTodos,
+    // queryFn: fetchCompletedTodos,
     initialData: [
       {
         todoId: 1,
