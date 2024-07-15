@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import axiosInstance from '../api/axios';
-import axios from 'axios';
+// src/hooks/useAchievements.ts
+import { useQuery } from '@tanstack/react-query';
+import { fetchAchievements } from '../api/achievements';
 import { Game } from './useGames';
+import { useState } from 'react';
 
 export interface Achievement {
   id: number;
@@ -13,30 +14,17 @@ export interface Achievement {
   unlockTime: string;
 }
 
-const useAchievements = (game: Game | null) => {
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
+const useAchievements = (game: Game) => {
   const [selectedAchievement, setSelectedAchievement] =
     useState<Achievement | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchAchievements = async () => {
-      if (!game) return;
-      try {
-        const response = await axiosInstance.get(`/achievement/${game.appid}`);
-        setAchievements(response.data.achievements);
-      } catch (error) {
-        if (axios.isAxiosError<{ message: string }>(error)) {
-          setError(true);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const { data, error, isLoading } = useQuery<Achievement[], Error>({
+    queryKey: ['achievements', game.appid],
+    queryFn: () => fetchAchievements(game.appid),
+    enabled: !!game,
+  });
 
-    fetchAchievements();
-  }, [game]);
+  const achievements = data || [];
 
   // 도전과제가 달성된 순서대로 정렬 그리고 달성률 낮은순으로 정렬
   achievements.sort((a, b) => {

@@ -9,11 +9,12 @@ import Loading from '../../components/common/Loading';
 import useSnackBar from '../../hooks/useSnackBar';
 import { useEffect, useRef } from 'react';
 import useTodos from '../../hooks/useTodos';
-
+// TODO: 게임 선택을 하지 않고 url로 직접 접근할 경우 예외처리 추가하기
 function Achievements() {
   const location = useLocation();
   const game = location.state;
   const navigate = useNavigate();
+
   const {
     achievements,
     setSelectedAchievement,
@@ -129,29 +130,31 @@ function Achievements() {
   };
 
   return (
-    <AchievementsStyle
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}>
-      <Title>
-        <h2>도전과제를 선택해 주세요.</h2>
-        <div className='game-img'>
-          <img
-            src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/header.jpg`}
-            alt={game.name}
-          />
-        </div>
-        <h3>{game.name}</h3>
-        <div>
-          <span>
-            {totalAchievements} 중 {completedAchievements} (
-            {completionRate.toFixed(1)}%) 개의 도전과제 완료
-          </span>
-          <ProgressBar $completionRate={completionRate} />
-        </div>
-      </Title>
-      {renderContent()}
-    </AchievementsStyle>
+    game && (
+      <AchievementsStyle
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}>
+        <Title>
+          <h2>도전과제를 선택해 주세요.</h2>
+          <div className='game-img'>
+            <img
+              src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/header.jpg`}
+              alt={game.name}
+            />
+          </div>
+          <h3>{game.name}</h3>
+          <div>
+            <span>
+              {totalAchievements} 중 {completedAchievements} (
+              {completionRate.toFixed(1)}%) 개의 도전과제 완료
+            </span>
+            <ProgressBar $completionRate={completionRate} />
+          </div>
+        </Title>
+        {renderContent()}
+      </AchievementsStyle>
+    )
   );
 }
 
