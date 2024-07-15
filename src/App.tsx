@@ -5,23 +5,28 @@ import Home from './pages/Home';
 import CompletedTodo from './pages/CompletedTodo';
 import Games from './pages/CreateTodo/Games';
 import Achievements from './pages/CreateTodo/Achievements';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+export const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <div>
-      <GlobalStyle />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index path='/' element={<Home />} />
-            <Route path='/create/games' element={<Games />} />
-            <Route path='/create/achievements' element={<Achievements />} />
-            <Route path='/completed' element={<CompletedTodo />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      <div id='modalRoot' />
-      <div id='snackbarRoot' />
+      <QueryClientProvider client={queryClient}>
+        <GlobalStyle />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index path='/' element={<Home />} />
+              <Route path='/create/games' element={<Games />} />
+              <Route path='/create/achievements' element={<Achievements />} />
+              <Route path='/completed' element={<CompletedTodo />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+        <div id='modalRoot' />
+        <div id='snackbarRoot' />
+      </QueryClientProvider>
     </div>
   );
 };

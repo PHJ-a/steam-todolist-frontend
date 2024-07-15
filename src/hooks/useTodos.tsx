@@ -1,66 +1,30 @@
-import { useEffect, useState } from 'react';
 import { Todo } from '../models/type';
-import axiosInstance from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import { deleteTodo, fetchTodos } from '../api/fetchs';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const useTodos = () => {
   const { isLoggedIn } = useAuth();
-  const [todos, setTodos] = useState<Todo[]>([
-    // {
-    //   todoId: 1,
-    //   achieveName: '엘든링 도전과제 1',
-    //   achieveId: 101,
-    //   gameId: 201,
-    //   gameName: '엘든링',
-    //   start: new Date('2024-06-22T00:00:00'),
-    //   end: null,
-    //   isFinished: false,
-    // },
-    // {
-    //   todoId: 2,
-    //   achieveName: '나의 도전과제 2',
-    //   achieveId: 102,
-    //   gameId: 202,
-    //   gameName: '엘든링',
-    //   start: new Date('2024-06-28T00:00:00'),
-    //   end: null,
-    //   isFinished: false,
-    // },
-  ]);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const res = await axiosInstance.get('/todo', {
-          params: {
-            completed: false,
-          },
-        });
-        const todos = res.data;
-        setTodos(todos);
-      } catch (error) {
-        if (axios.isAxiosError<{ message: string }>(error)) {
-          console.error(error);
-        }
-      }
-    };
+  const { data: todos } = useQuery<Todo[], Error>({
+    queryKey: ['todos'],
+    queryFn: fetchTodos,
+    enabled: isLoggedIn,
+  });
 
-    if (isLoggedIn) {
-      fetchTodos();
-    }
-  }, [isLoggedIn]);
+  const removeTodoMutation = useMutation({
+    mutationFn: deleteTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todos'] });
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
-  const removeTodo = async (id: number) => {
-    try {
-      await axiosInstance.delete(`/todo/${id}`);
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo.todoId !== id));
-    } catch (error) {
-      if (axios.isAxiosError<{ message: string }>(error)) {
-        console.log(error);
-      }
-      throw error;
-    }
+  const removeTodo = (id: number) => {
+    removeTodoMutation.mutate(id);
   };
   return { todos, removeTodo };
 };

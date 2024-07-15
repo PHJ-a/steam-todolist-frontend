@@ -33,7 +33,7 @@ const MyCalendar = () => {
 
   const handleRemove = async (id: number) => {
     try {
-      await removeTodo(id);
+      removeTodo(id);
       openSnackbar('삭제가 완료되었습니다');
     } catch (error) {
       if (axios.isAxiosError<{ message: string }>(error)) {
@@ -72,6 +72,8 @@ const MyCalendar = () => {
   const [eventData, setEventData] = useState<ModalData | null>(null);
 
   const colors = ['#FF6347', '#4682B4', '#6A5ACD', '#FFD700', '#6A5ACD'];
+
+  if (!todos) return;
 
   const colorsTodo: CustomEvent[] = todos.map((todo, index) => ({
     id: todo.todoId,
