@@ -6,9 +6,15 @@ type ListItemProps = {
   todo: Todo;
   isLoggedIn: boolean;
   handleRemove: (id: number) => void;
+  handleUpdate: (id: number) => void;
 };
 
-const ListItem = ({ todo, isLoggedIn, handleRemove }: ListItemProps) => {
+const ListItem = ({
+  todo,
+  isLoggedIn,
+  handleRemove,
+  handleUpdate,
+}: ListItemProps) => {
   return (
     <AchievementItem isLoggedIn={isLoggedIn}>
       <div className='header'>
@@ -17,14 +23,19 @@ const ListItem = ({ todo, isLoggedIn, handleRemove }: ListItemProps) => {
           X
         </div>
       </div>
-
       <AchievementTitle>{todo.achieveName}</AchievementTitle>
       <TimeInfo>
         시작시간: {formatToKoreanTime(todo.start)}
         <br />
         경과시간: {calculateElapsedTime(todo.start, todo.end)}
       </TimeInfo>
-      <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
+      <StatusContainer>
+        <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
+
+        <CompleteButton onClick={() => handleUpdate(todo.todoId)}>
+          완료
+        </CompleteButton>
+      </StatusContainer>
     </AchievementItem>
   );
 };
@@ -71,6 +82,12 @@ const TimeInfo = styled.div`
   font-size: 14px;
   margin-top: 5px;
 `;
+const StatusContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+`;
 
 const Status = styled.div<{ isCompleted: string | null }>`
   margin-top: 10px;
@@ -78,5 +95,14 @@ const Status = styled.div<{ isCompleted: string | null }>`
   color: ${(props) => (props.isCompleted ? '#a1cd44' : '#ff8c00')};
   font-weight: bold;
 `;
-
+const CompleteButton = styled.button`
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #45a049;
+  }
+`;
 export default ListItem;

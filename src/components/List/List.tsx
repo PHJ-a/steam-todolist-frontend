@@ -11,9 +11,14 @@ import errorIcon from '../../assets/error.png';
 type AchievementListProps = {
   todos: Todo[];
   handleRemove: (id: number) => void;
+  handleUpdate: (id: number) => void;
 };
 
-const AchievementList = ({ todos, handleRemove }: AchievementListProps) => {
+const AchievementList = ({
+  todos,
+  handleRemove,
+  handleUpdate,
+}: AchievementListProps) => {
   const { open, openModal, closeModal } = useModal();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
@@ -34,6 +39,7 @@ const AchievementList = ({ todos, handleRemove }: AchievementListProps) => {
           todo={todo}
           isLoggedIn={isLoggedIn}
           handleRemove={handleRemove}
+          handleUpdate={handleUpdate}
         />
       ))}
       {isLoggedIn && (

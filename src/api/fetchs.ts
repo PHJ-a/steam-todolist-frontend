@@ -22,4 +22,9 @@ const fetchTodos = async () => {
 const deleteTodo = async (id: number) => {
   await axiosInstance.delete(`/todo/${id}`);
 };
-export { fetchCompletedTodos, fetchTodos, deleteTodo };
+
+const updateTodo = async (id: number) => {
+  await axiosInstance.patch(`/todo/${id}`);
+};
+
+export { fetchCompletedTodos, fetchTodos, deleteTodo, updateTodo };
