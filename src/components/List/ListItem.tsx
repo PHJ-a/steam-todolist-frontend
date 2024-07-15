@@ -84,6 +84,7 @@ const TimeInfo = styled.div`
   font-size: 14px;
   margin-top: 5px;
 `;
+
 const StatusContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -92,11 +93,11 @@ const StatusContainer = styled.div`
 `;
 
 const Status = styled.div<{ $isCompleted: string | null }>`
-  margin-top: 10px;
   font-size: 14px;
   color: ${(props) => (props.$isCompleted ? '#a1cd44' : '#ff8c00')};
   font-weight: bold;
 `;
+
 const CompleteButton = styled.button`
   background-color: #4caf50;
   color: white;
@@ -107,4 +108,5 @@ const CompleteButton = styled.button`
     background-color: #45a049;
   }
 `;
+
 export default ListItem;
