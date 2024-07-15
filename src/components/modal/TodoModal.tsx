@@ -3,7 +3,7 @@ import Modal from './Modal';
 import styled from 'styled-components';
 import img from '../../assets/eldenring.jpg';
 import icon from '../../assets/도전과제 아이콘.jpg';
-import { calculateElapsedTime } from '../../utils/days';
+import { calculateElapsedTime, formatToKoreanTime } from '../../utils/days';
 
 type TodoModalProps = {
   open: boolean;
@@ -38,21 +38,9 @@ const TodoModal = ({ open, close, data, dummy }: TodoModalProps) => {
           <div className='title'>{data?.achieveName}</div>
         </Title>
         <ChallengeDesc>{data?.achieveDescription}</ChallengeDesc>
-        <StartTime>
-          시작 시간 :{' '}
-          {data.start.toLocaleString('ko-KR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-            timeZone: 'Asia/Seoul',
-          })}
-        </StartTime>
+        <StartTime>시작 시간 : {formatToKoreanTime(data.start)}</StartTime>
         <ElapsedTime>
-          경과 시간:{' '}
-          {calculateElapsedTime(data.start, data.end ? data.end : new Date())}
+          경과 시간: {calculateElapsedTime(data.start, data.end)}
         </ElapsedTime>
         <ProgressContainer>
           <p>전체유저의 달성률 {data?.completedRate}%</p>

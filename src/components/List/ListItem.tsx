@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Todo } from '../../models/type';
+import { calculateElapsedTime, formatToKoreanTime } from '../../utils/days';
 
 type ListItemProps = {
   todo: Todo;
@@ -19,12 +20,9 @@ const ListItem = ({ todo, isLoggedIn, handleRemove }: ListItemProps) => {
 
       <AchievementTitle>{todo.achieveName}</AchievementTitle>
       <TimeInfo>
-        시작시간: {todo.start.toLocaleString()}
+        시작시간: {formatToKoreanTime(todo.start)}
         <br />
-        경과시간:{' '}
-        {todo.end
-          ? todo.end.toLocaleString()
-          : new Date(Date.now()).toLocaleString()}
+        경과시간: {calculateElapsedTime(todo.start, todo.end)}
       </TimeInfo>
       <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
     </AchievementItem>
