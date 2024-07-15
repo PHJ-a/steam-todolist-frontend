@@ -93,6 +93,7 @@ const StatusContainer = styled.div`
 `;
 
 const Status = styled.div<{ $isCompleted: string | null }>`
+  margin-top: 10px;
   font-size: 14px;
   color: ${(props) => (props.$isCompleted ? '#a1cd44' : '#ff8c00')};
   font-weight: bold;
