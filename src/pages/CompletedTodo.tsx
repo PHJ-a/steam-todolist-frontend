@@ -5,7 +5,7 @@ import useModal from '../hooks/useModal';
 import { ModalData } from '../models/type';
 import TodoModal from '../components/modal/TodoModal';
 import { FaClock, FaEye, FaGamepad, FaSearch, FaTrophy } from 'react-icons/fa';
-import { calculateElapsedTime } from '../utils/days';
+import { calculateElapsedTime, formatToKoreanTime } from '../utils/days';
 
 const itemsPerPage = 8; // 페이지 당 항목 수
 
@@ -36,8 +36,8 @@ const AchievementTable = () => {
       gameId: 123,
       achieveName: '엘든링 도전과제',
       achieveDescription: '엘든링 도전과제 설명',
-      start: new Date('2024-06-22T00:00:00'),
-      end: new Date('2024-06-22T12:00:00'),
+      start: '2024-06-22T00:00:00',
+      end: '2024-06-22T12:00:00',
       completedRate: '85',
       achieveId: 1,
       achieveIcon: '',
@@ -97,17 +97,7 @@ const AchievementTable = () => {
                 onClick={() => hanldeModal(/*todo.todoId*/)}>
                 <TableCell>{todo.achieveName}</TableCell>
                 <TableCell>{todo.gameName}</TableCell>
-                <TableCell>
-                  {todo.start.toLocaleString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                    timeZone: 'Asia/Seoul',
-                  })}
-                </TableCell>
+                <TableCell>{formatToKoreanTime(todo.start)}</TableCell>
                 <TableCell>
                   {calculateElapsedTime(todo.start, todo.end!)}
                 </TableCell>
