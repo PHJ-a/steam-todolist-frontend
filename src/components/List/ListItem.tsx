@@ -30,7 +30,9 @@ const ListItem = ({
         경과시간: {calculateElapsedTime(todo.start, todo.end)}
       </TimeInfo>
       <StatusContainer>
-        <Status isCompleted={todo.end}>{todo.end ? '완료됨' : '미완료'}</Status>
+        <Status $isCompleted={todo.end}>
+          {todo.end ? '완료됨' : '미완료'}
+        </Status>
 
         <CompleteButton onClick={() => handleUpdate(todo.todoId)}>
           완료
@@ -89,10 +91,10 @@ const StatusContainer = styled.div`
   margin-top: 10px;
 `;
 
-const Status = styled.div<{ isCompleted: string | null }>`
+const Status = styled.div<{ $isCompleted: string | null }>`
   margin-top: 10px;
   font-size: 14px;
-  color: ${(props) => (props.isCompleted ? '#a1cd44' : '#ff8c00')};
+  color: ${(props) => (props.$isCompleted ? '#a1cd44' : '#ff8c00')};
   font-weight: bold;
 `;
 const CompleteButton = styled.button`
