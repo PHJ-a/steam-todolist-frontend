@@ -44,11 +44,17 @@ const AchievementsListStyle = styled(motion.div)`
 const Row = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
   gap: 12px;
   background-color: #272b36;
   padding: 20px;
   overflow-y: auto;
-  min-width: 1200px;
+  width: 1200px;
   height: 330px;
 `;
 
