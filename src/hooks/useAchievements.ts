@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axiosInstance from '../api/axios';
-// import { Achievement, Game } from '../pages/CreateTodo';
 import axios from 'axios';
 import { Game } from './useGames';
 
@@ -11,6 +10,7 @@ export interface Achievement {
   achieved: number;
   img: string;
   completedRate: string;
+  unlockTime: string;
 }
 
 const useAchievements = (game: Game | null) => {
