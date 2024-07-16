@@ -27,4 +27,10 @@ const updateTodo = async (id: number) => {
   await axiosInstance.patch(`/todo/${id}`);
 };
 
-export { fetchCompletedTodos, fetchTodos, deleteTodo, updateTodo };
+const createTodo = async (achievementId: number) => {
+  await axiosInstance.post('/todo', {
+    id: achievementId,
+  });
+};
+
+export { fetchCompletedTodos, fetchTodos, deleteTodo, updateTodo, createTodo };
