@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import useModal from '../../hooks/useModal';
 import ErrorModal from '../modal/ErrorModal';
 import errorIcon from '../../assets/error.png';
+import InfoModal from '../modal/infoModal';
 
 type AchievementListProps = {
   todos: Todo[];
@@ -19,11 +20,31 @@ const AchievementList = ({
   handleRemove,
   handleUpdate,
 }: AchievementListProps) => {
-  const { open, openModal, closeModal } = useModal();
+  const {
+    open: errorOpen,
+    openModal: openErrorModal,
+    closeModal: closeErrorModal,
+  } = useModal();
+  const {
+    open: infoOpen,
+    openModal: openInfoModal,
+    closeModal: closeInfoModal,
+  } = useModal();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
+
   const navigateToCreate = () => {
-    navigate('/create/games');
+    if (todos.length === 3) {
+      openErrorModal();
+      return;
+    }
+
+    const isChecked = localStorage.getItem('isChecked') === 'true';
+    if (isChecked) {
+      navigate('/create/games');
+    } else {
+      openInfoModal();
+    }
   };
 
   return (
@@ -43,18 +64,18 @@ const AchievementList = ({
         />
       ))}
       {isLoggedIn && (
-        <CreateButton
-          onClick={todos.length !== 3 ? navigateToCreate : openModal}>
+        <CreateButton onClick={navigateToCreate}>
           도전과제 생성 &nbsp;{todos.length}/3
         </CreateButton>
       )}
       <ErrorModal
         icon={errorIcon}
-        open={open}
-        close={closeModal}
+        open={errorOpen}
+        close={closeErrorModal}
         title='도전과제 생성오류'
         message='최대 3개까지만 생성이 가능합니다'
       />
+      <InfoModal open={infoOpen} close={closeInfoModal} />
     </ListContainer>
   );
 };
