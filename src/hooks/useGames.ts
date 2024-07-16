@@ -1,4 +1,3 @@
-// src/hooks/useGames.ts
 import { useQuery } from '@tanstack/react-query';
 import { fetchGames } from '../api/games';
 
