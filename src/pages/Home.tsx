@@ -48,7 +48,9 @@ const MyCalendar = () => {
       openSnackbar('도전과제가 완료되었습니다');
     } catch (error) {
       if (axios.isAxiosError<{ message: string }>(error)) {
-        openSnackbar('도전과제를 완료해주세요');
+        if (error.response?.status === 409) {
+          openSnackbar('도전과제를 완료해주세요');
+        }
       }
     }
   };
