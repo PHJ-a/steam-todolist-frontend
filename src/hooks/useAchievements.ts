@@ -1,4 +1,3 @@
-// src/hooks/useAchievements.ts
 import { useQuery } from '@tanstack/react-query';
 import { fetchAchievements } from '../api/achievements';
 import { Game } from './useGames';
