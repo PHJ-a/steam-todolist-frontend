@@ -8,7 +8,7 @@ import useModal from '../hooks/useModal';
 import TodoModal from '../components/modal/TodoModal';
 import { ModalData } from '../models/type';
 import AchievementList from '../components/List/List';
-// import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import useTodos from '../hooks/useTodos';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
@@ -26,7 +26,7 @@ type CustomEvent = Event & {
 };
 
 const MyCalendar = () => {
-  // const { isLoggedIn, isLoading } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
   const { todos, removeTodo, updateTodoItem } = useTodos();
   const { snackbar, open: openSnackbar } = useSnackBar();
@@ -88,7 +88,10 @@ const MyCalendar = () => {
   };
 
   useEffect(() => {
-    checkAndHandleLoginStatus();
+    if (!isLoading && !isLoggedIn) {
+      checkAndHandleLoginStatus();
+    }
+
     window.addEventListener('focus', checkAndHandleLoginStatus);
     window.addEventListener('popstate', checkAndHandleLoginStatus);
 
@@ -96,7 +99,7 @@ const MyCalendar = () => {
       window.removeEventListener('focus', checkAndHandleLoginStatus);
       window.removeEventListener('popstate', checkAndHandleLoginStatus);
     };
-  }, []);
+  }, [isLoading, isLoggedIn]);
 
   // useEffect(() => {
   //   if (!isLoading && !isLoggedIn) {
