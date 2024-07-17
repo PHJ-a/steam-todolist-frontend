@@ -46,8 +46,8 @@ const useTodos = () => {
   const removeTodo = (id: number) => {
     removeTodoMutation.mutate(id);
   };
-  const updateTodoItem = (id: number) => {
-    updateTodoMutation.mutate(id);
+  const updateTodoItem = async (id: number) => {
+    await updateTodoMutation.mutateAsync(id);
   };
   return { todos, removeTodo, updateTodoItem, createTodoMutation };
 };
