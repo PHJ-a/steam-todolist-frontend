@@ -15,20 +15,42 @@ const useTodos = () => {
 
   const removeTodoMutation = useMutation({
     mutationFn: deleteTodo,
-    onSuccess: () => {
+    onMutate: async (id: number) => {
+      await queryClient.cancelQueries({ queryKey: ['todos'] });
+      const previousTodos = queryClient.getQueryData<Todo[]>(['todos']);
+
+      queryClient.setQueryData<Todo[]>(['todos'], (old) => {
+        return old?.filter((todo) => todo.todoId !== id);
+      });
+
+      return { previousTodos };
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
     },
-    onError: (error) => {
+    onError: (error, _, context) => {
+      queryClient.setQueryData<Todo[]>(['todos'], context?.previousTodos);
       console.error(error);
     },
   });
 
   const updateTodoMutation = useMutation({
     mutationFn: updateTodo,
-    onSuccess: () => {
+    onMutate: async (id: number) => {
+      await queryClient.cancelQueries({ queryKey: ['todos'] });
+      const previousTodos = queryClient.getQueryData<Todo[]>(['todos']);
+
+      queryClient.setQueryData<Todo[]>(['todos'], (old) => {
+        return old?.filter((todo) => todo.todoId !== id);
+      });
+
+      return { previousTodos };
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
     },
-    onError: (error) => {
+    onError: (error, _, context) => {
+      queryClient.setQueryData<Todo[]>(['todos'], context?.previousTodos);
       console.error(error);
     },
   });
@@ -43,13 +65,12 @@ const useTodos = () => {
     },
   });
 
-  const removeTodo = (id: number) => {
-    removeTodoMutation.mutate(id);
+  return {
+    todos,
+    updateTodoMutation,
+    createTodoMutation,
+    removeTodoMutation,
   };
-  const updateTodoItem = async (id: number) => {
-    await updateTodoMutation.mutateAsync(id);
-  };
-  return { todos, removeTodo, updateTodoItem, createTodoMutation };
 };
 
 export default useTodos;
