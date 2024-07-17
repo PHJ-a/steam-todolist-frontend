@@ -28,16 +28,16 @@ type CustomEvent = Event & {
 const MyCalendar = () => {
   const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
-  const { todos, removeTodo, updateTodoItem } = useTodos();
+  const { todos, updateTodoItem, removeTodoMutation } = useTodos();
   const { snackbar, open: openSnackbar } = useSnackBar();
 
   const handleRemove = async (id: number) => {
     try {
-      removeTodo(id);
+      await removeTodoMutation.mutateAsync(id);
       openSnackbar('삭제가 완료되었습니다');
     } catch (error) {
       if (axios.isAxiosError<{ message: string }>(error)) {
-        console.error(error);
+        openSnackbar('삭제에 실패했습니다');
       }
     }
   };
