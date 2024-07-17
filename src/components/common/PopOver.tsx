@@ -17,6 +17,7 @@ const PopOver = ({ close }: PopOverProps) => {
   const handleLogout = async () => {
     try {
       await axiosInstance.get('/logout');
+      close();
       setIsLoggedIn(false);
       navigate('/');
     } catch (error) {
