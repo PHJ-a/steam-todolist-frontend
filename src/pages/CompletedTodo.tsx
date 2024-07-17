@@ -125,7 +125,7 @@ const AchievementTable = () => {
           다음
         </PaginationButton>
       </Pagination>
-      <TodoModal open={open} close={closeModal} data={modalData} dummy />
+      <TodoModal open={open} close={closeModal} data={modalData} />
     </Wrapper>
   );
 };

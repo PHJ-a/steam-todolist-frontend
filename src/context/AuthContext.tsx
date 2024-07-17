@@ -39,6 +39,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
     };
 
     checkLoginStatus();
+    window.addEventListener('popstate', checkLoginStatus);
+
+    return () => {
+      window.removeEventListener('popstate', checkLoginStatus);
+    };
   }, []);
 
   return (
