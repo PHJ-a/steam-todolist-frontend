@@ -8,7 +8,7 @@ import useModal from '../hooks/useModal';
 import TodoModal from '../components/modal/TodoModal';
 import { ModalData } from '../models/type';
 import AchievementList from '../components/List/List';
-import { useAuth } from '../context/AuthContext';
+// import { useAuth } from '../context/AuthContext';
 import useTodos from '../hooks/useTodos';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
@@ -26,7 +26,7 @@ type CustomEvent = Event & {
 };
 
 const MyCalendar = () => {
-  const { isLoggedIn, isLoading } = useAuth();
+  // const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
   const { todos, removeTodo, updateTodoItem } = useTodos();
   const { snackbar, open: openSnackbar } = useSnackBar();
@@ -54,9 +54,15 @@ const MyCalendar = () => {
       }
     }
   };
+  const checkAndHandleLoginStatus = () => {
+    const loginCookie = document.cookie
+      .split(';')
+      .find((row) => row.trim().startsWith('isLoggedIn='));
+    const newIsLoggedIn = loginCookie
+      ? loginCookie.split('=')[1] === 'true'
+      : false;
 
-  useEffect(() => {
-    if (!isLoading && !isLoggedIn) {
+    if (!newIsLoggedIn) {
       Swal.fire({
         allowOutsideClick: false,
         title: '로그인이 필요합니다.',
@@ -71,7 +77,6 @@ const MyCalendar = () => {
           left top / 500px 300px
           no-repeat
         `,
-
         showConfirmButton: true,
         confirmButtonText: '로그인하러 가기',
       }).then((result) => {
@@ -80,7 +85,45 @@ const MyCalendar = () => {
         }
       });
     }
-  }, [isLoggedIn, isLoading]);
+  };
+
+  useEffect(() => {
+    checkAndHandleLoginStatus();
+    window.addEventListener('focus', checkAndHandleLoginStatus);
+    window.addEventListener('popstate', checkAndHandleLoginStatus);
+
+    return () => {
+      window.removeEventListener('focus', checkAndHandleLoginStatus);
+      window.removeEventListener('popstate', checkAndHandleLoginStatus);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   if (!isLoading && !isLoggedIn) {
+  //     Swal.fire({
+  //       allowOutsideClick: false,
+  //       title: '로그인이 필요합니다.',
+  //       text: '저희 서비스는 로그인을 하셔야만 사용가능합니다.',
+  //       width: 600,
+  //       padding: '3em',
+  //       color: '#716add',
+  //       background: '#fff  url("../assets/nyan-cat.gif")',
+  //       backdrop: `
+  //         rgba(0,0,123,0.4)
+  //         url(${nyanCat})
+  //         left top / 500px 300px
+  //         no-repeat
+  //       `,
+
+  //       showConfirmButton: true,
+  //       confirmButtonText: '로그인하러 가기',
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         window.location.href = BASE_URL + `/login`;
+  //       }
+  //     });
+  //   }
+  // }, [isLoggedIn, isLoading]);
 
   const [eventData, setEventData] = useState<ModalData | null>(null);
 
