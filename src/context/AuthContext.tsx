@@ -39,10 +39,10 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
     };
 
     checkLoginStatus();
-    window.addEventListener('popstate', checkLoginStatus);
+    window.addEventListener('focus', checkLoginStatus);
 
     return () => {
-      window.removeEventListener('popstate', checkLoginStatus);
+      window.removeEventListener('focus', checkLoginStatus);
     };
   }, []);
 
