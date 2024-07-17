@@ -28,7 +28,7 @@ type CustomEvent = Event & {
 const MyCalendar = () => {
   const { isLoggedIn, isLoading } = useAuth();
   const { open, openModal, closeModal, getModalData } = useModal();
-  const { todos, updateTodoItem, removeTodoMutation } = useTodos();
+  const { todos, updateTodoMutation, removeTodoMutation } = useTodos();
   const { snackbar, open: openSnackbar } = useSnackBar();
 
   const handleRemove = async (id: number) => {
@@ -44,7 +44,7 @@ const MyCalendar = () => {
 
   const handleUpdate = async (id: number) => {
     try {
-      await updateTodoItem(id);
+      await updateTodoMutation.mutateAsync(id);
       openSnackbar('도전과제가 완료되었습니다');
     } catch (error) {
       if (axios.isAxiosError<{ message: string }>(error)) {
