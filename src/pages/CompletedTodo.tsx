@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useCompletedTodos from '../hooks/useCompletedTodo';
 import useModal from '../hooks/useModal';
-import { ModalData } from '../models/type';
+import { ModalData, Todo } from '../models/type';
 import TodoModal from '../components/modal/TodoModal';
 import { FaClock, FaEye, FaGamepad, FaSearch, FaTrophy } from 'react-icons/fa';
 import { calculateElapsedTime, formatToKoreanTime } from '../utils/days';
@@ -11,50 +11,42 @@ const itemsPerPage = 8; // 페이지 당 항목 수
 
 const AchievementTable = () => {
   const { todos } = useCompletedTodos();
-  const { open, openModal, closeModal /*getModalData*/ } = useModal();
+  const { open, openModal, closeModal, getModalData } = useModal();
   const [modalData, setmodalData] = useState<ModalData | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [filteredTodos, setFilteredTodos] = useState(todos);
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    if (todos) {
+      setFilteredTodos(todos);
+    }
+  }, [todos]);
 
   // 현재 페이지의 데이터 계산
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredTodos.slice(indexOfFirstItem, indexOfLastItem);
 
-  useEffect(() => {
-    setFilteredTodos(todos);
-  }, [todos]);
   // 페이지 변경 핸들러
+
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  const hanldeModal = async (/*id: number*/) => {
-    const data2: ModalData = {
-      todoId: 1,
-      gameName: `엘든링`,
-      gameId: 123,
-      achieveName: '엘든링 도전과제',
-      achieveDescription: '엘든링 도전과제 설명',
-      start: '2024-06-22T00:00:00',
-      end: '2024-06-22T12:00:00',
-      completedRate: '85',
-      achieveId: 1,
-      achieveIcon: '',
-      isFinished: true,
-      achieveTag: '',
-    };
-    // const data = await getModalData(id);
-    setmodalData(data2);
+  const hanldeModal = async (id: number) => {
+    const data = await getModalData(id);
+    setmodalData(data);
     openModal();
   };
 
   const handleSearch = () => {
-    const filtered = todos.filter((todo) =>
-      todo.achieveName.toLowerCase().includes(search.toLowerCase()),
-    );
-    setFilteredTodos(filtered);
-    setCurrentPage(1);
+    if (todos) {
+      const filtered = todos.filter((todo) =>
+        todo.achieveName.toLowerCase().includes(search.toLowerCase()),
+      );
+      setFilteredTodos(filtered);
+      setCurrentPage(1);
+    }
   };
   return (
     <Wrapper>
@@ -94,7 +86,7 @@ const AchievementTable = () => {
             currentItems.map((todo) => (
               <TableRow
                 key={todo.todoId}
-                onClick={() => hanldeModal(/*todo.todoId*/)}>
+                onClick={() => hanldeModal(todo.todoId)}>
                 <TableCell>{todo.achieveName}</TableCell>
                 <TableCell>{todo.gameName}</TableCell>
                 <TableCell>{formatToKoreanTime(todo.start)}</TableCell>

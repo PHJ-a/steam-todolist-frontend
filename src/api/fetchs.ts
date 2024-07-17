@@ -4,7 +4,7 @@ import axiosInstance from './axios';
 const fetchCompletedTodos = async () => {
   const res = await axiosInstance.get<Todo[]>('/todo', {
     params: {
-      completed: true,
+      complete: true,
     },
   });
   return res.data;
@@ -13,7 +13,7 @@ const fetchCompletedTodos = async () => {
 const fetchTodos = async () => {
   const res = await axiosInstance.get<Todo[]>('/todo', {
     params: {
-      completed: false,
+      complete: false,
     },
   });
   return res.data;
