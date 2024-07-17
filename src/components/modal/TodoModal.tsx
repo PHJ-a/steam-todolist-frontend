@@ -1,18 +1,15 @@
 import { ModalData } from '../../models/type';
 import Modal from './Modal';
 import styled from 'styled-components';
-import img from '../../assets/eldenring.jpg';
-import icon from '../../assets/도전과제 아이콘.jpg';
 import { calculateElapsedTime, formatToKoreanTime } from '../../utils/days';
 
 type TodoModalProps = {
   open: boolean;
   close: () => void;
   data: ModalData | null;
-  dummy?: boolean;
 };
 
-const TodoModal = ({ open, close, data, dummy }: TodoModalProps) => {
+const TodoModal = ({ open, close, data }: TodoModalProps) => {
   if (!data) return;
   return (
     <Modal open={open} onClickOutside close={close}>
@@ -20,21 +17,13 @@ const TodoModal = ({ open, close, data, dummy }: TodoModalProps) => {
       <Modal.Content>
         <GameImageWrapper>
           <GameImage
-            src={
-              dummy
-                ? img
-                : `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${data.gameId}/header.jpg`
-            }
+            src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${data.gameId}/header.jpg`}
             alt={data?.gameName}
           />
           <AbsoluteText>{data?.gameName}</AbsoluteText>
         </GameImageWrapper>
         <Title>
-          <img
-            src={dummy ? icon : data.achieveIcon}
-            className='icon'
-            alt='Achievement Icon'
-          />
+          <img src={data.achieveIcon} className='icon' alt='Achievement Icon' />
           <div className='title'>{data?.achieveName}</div>
         </Title>
         <ChallengeDesc>{data?.achieveDescription}</ChallengeDesc>
