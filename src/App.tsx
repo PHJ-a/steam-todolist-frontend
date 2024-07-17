@@ -6,6 +6,7 @@ import CompletedTodo from './pages/CompletedTodo';
 import Games from './pages/CreateTodo/Games';
 import Achievements from './pages/CreateTodo/Achievements';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const queryClient = new QueryClient();
 
@@ -13,6 +14,7 @@ const App = () => {
   return (
     <div>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyle />
         <BrowserRouter>
           <Routes>

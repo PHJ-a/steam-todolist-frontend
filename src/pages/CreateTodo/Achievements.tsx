@@ -3,17 +3,18 @@ import useAchievements from '../../hooks/useAchievements';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AchievementsList from '../../components/Achievements/AchievementsList';
 import { motion } from 'framer-motion';
-import axiosInstance from '../../api/axios';
 import axios from 'axios';
 import Loading from '../../components/common/Loading';
 import useSnackBar from '../../hooks/useSnackBar';
 import { useEffect, useRef } from 'react';
 import useTodos from '../../hooks/useTodos';
 
+// TODO: 게임 선택을 하지 않고 url로 직접 접근할 경우 예외처리 추가하기
 function Achievements() {
   const location = useLocation();
   const game = location.state;
   const navigate = useNavigate();
+
   const {
     achievements,
     setSelectedAchievement,
@@ -33,7 +34,7 @@ function Achievements() {
     useSnackBar();
   const { snackbar: todoLimitSnackbar, open: showTodoLimitSnackbar } =
     useSnackBar();
-  const { todos } = useTodos();
+  const { todos, createTodoMutation } = useTodos();
 
   // TODO : 현재 도전과제가 3개가 넘으면 예외처리 추가해 (API연결 후 작업)
   const handleCreateTodo = async () => {
@@ -43,28 +44,31 @@ function Achievements() {
       return;
     }
     if (selectedAchievement) {
-      try {
-        await axiosInstance.post('/todo', {
-          id: selectedAchievement.id,
-        });
-        showTodoAddedSnackbar('도전과제가 추가되었습니다.');
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
-      } catch (error) {
-        if (
-          axios.isAxiosError<{ message: string; statusCode: number }>(error) &&
-          error.response
-        ) {
-          const { statusCode } = error.response.data;
-
-          if (statusCode === 400) {
-            showExistingTodoSnackbar('이미 진행중인 도전과제 입니다');
+      createTodoMutation.mutate(selectedAchievement.id, {
+        onSuccess: () => {
+          showTodoAddedSnackbar('도전과제가 추가되었습니다.');
+          setTimeout(() => {
+            navigate('/');
+          }, 1000);
+        },
+        onError: (error) => {
+          if (
+            axios.isAxiosError<{ message: string; statusCode: number }>(
+              error,
+            ) &&
+            error.response
+          ) {
+            const { statusCode } = error.response.data;
+            if (statusCode === 400) {
+              showExistingTodoSnackbar('이미 진행중인 도전과제 입니다');
+            }
+          } else {
+            showErrorAddingTodoSnackbar(
+              '도전과제 추가 중 문제가 발생했습니다.',
+            );
           }
-        } else {
-          showErrorAddingTodoSnackbar('도전과제 추가 중 문제가 발생했습니다.');
-        }
-      }
+        },
+      });
     }
   };
 
@@ -129,29 +133,31 @@ function Achievements() {
   };
 
   return (
-    <AchievementsStyle
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}>
-      <Title>
-        <h2>도전과제를 선택해 주세요.</h2>
-        <div className='game-img'>
-          <img
-            src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/header.jpg`}
-            alt={game.name}
-          />
-        </div>
-        <h3>{game.name}</h3>
-        <div>
-          <span>
-            {totalAchievements} 중 {completedAchievements} (
-            {completionRate.toFixed(1)}%) 개의 도전과제 완료
-          </span>
-          <ProgressBar $completionRate={completionRate} />
-        </div>
-      </Title>
-      {renderContent()}
-    </AchievementsStyle>
+    game && (
+      <AchievementsStyle
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}>
+        <Title>
+          <h2>도전과제를 선택해 주세요.</h2>
+          <div className='game-img'>
+            <img
+              src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appid}/header.jpg`}
+              alt={game.name}
+            />
+          </div>
+          <h3>{game.name}</h3>
+          <div>
+            <span>
+              {totalAchievements} 중 {completedAchievements} (
+              {completionRate.toFixed(1)}%) 개의 도전과제 완료
+            </span>
+            <ProgressBar $completionRate={completionRate} />
+          </div>
+        </Title>
+        {renderContent()}
+      </AchievementsStyle>
+    )
   );
 }
 
