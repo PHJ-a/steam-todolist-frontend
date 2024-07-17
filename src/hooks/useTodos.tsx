@@ -36,21 +36,10 @@ const useTodos = () => {
 
   const updateTodoMutation = useMutation({
     mutationFn: updateTodo,
-    onMutate: async (id: number) => {
-      await queryClient.cancelQueries({ queryKey: ['todos'] });
-      const previousTodos = queryClient.getQueryData<Todo[]>(['todos']);
-
-      queryClient.setQueryData<Todo[]>(['todos'], (old) => {
-        return old?.filter((todo) => todo.todoId !== id);
-      });
-
-      return { previousTodos };
-    },
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
     },
-    onError: (error, _, context) => {
-      queryClient.setQueryData<Todo[]>(['todos'], context?.previousTodos);
+    onError: (error) => {
       console.error(error);
     },
   });
@@ -65,9 +54,13 @@ const useTodos = () => {
     },
   });
 
+  const updateTodoItem = async (id: number) => {
+    await updateTodoMutation.mutateAsync(id);
+  };
+
   return {
     todos,
-    updateTodoMutation,
+    updateTodoItem,
     createTodoMutation,
     removeTodoMutation,
   };
