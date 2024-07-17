@@ -28,7 +28,7 @@ const useTodos = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
     },
-    onError: (error, todo, context) => {
+    onError: (error, _, context) => {
       queryClient.setQueryData<Todo[]>(['todos'], context?.previousTodos);
       console.error(error);
     },
