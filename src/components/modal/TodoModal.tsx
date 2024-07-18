@@ -50,7 +50,7 @@ const TodoModal = ({ open, close, data }: TodoModalProps) => {
 };
 
 const GameImageWrapper = styled.div`
-  width: 800px;
+  max-width: 800px;
   position: relative;
   margin-bottom: 20px;
   border-radius: 10px;
